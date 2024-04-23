@@ -42,7 +42,7 @@ declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_PDBQT[*]}"))
 for LIGAND in "${LIGANDS[@]}"
  do
   echo "Summary file path ${SUMMARY_FILE_PATH}"
-  grep -i "result" "${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt" > "${SUMMARY_FILE_PATH}/${LIGAND}.txt"
+  grep -i "result" -m 1 "${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt" > "${SUMMARY_FILE_PATH}/${LIGAND}.txt"
 
  done
 
