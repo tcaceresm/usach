@@ -42,6 +42,8 @@ declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_SDF[*]}"))
 
 for LIGAND  in "${LIGANDS[@]}"
  do
+  echo 'Summary file path ${SUMMARY_FILE_PATH}'
+  echo 'Ligand ${LIGAND}'
   echo "Parsing Vina output PDBQT file ${LIGAND}"
   grep -i 'result' ${LIGAND} > '${SUMMARY_FILE_PATH}/${LIGAND}.txt'
 
