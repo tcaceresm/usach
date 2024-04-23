@@ -40,7 +40,7 @@ declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
 declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_SDF[*]}"))
 
 
-for LIGAND  in "${LIGANDS[@]}"
+for LIGAND in "${LIGANDS[@]}"
  do
   echo 'Summary file path ${SUMMARY_FILE_PATH}'
   echo 'Ligand ${LIGAND}'
