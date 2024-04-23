@@ -39,15 +39,12 @@ done
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
 declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_PDBQT[*]}"))
 
-echo $LIGANDS_PDBQT
-#echo $LIGANDS
+
 
 for LIGAND in "${LIGANDS[@]}"
  do
-  echo 'Summary file path ${SUMMARY_FILE_PATH}'
-  echo 'Ligand ${LIGAND}'
-  echo "Parsing Vina output PDBQT file ${LIGAND}"
-  grep -i 'result' ${LIGAND} > '${SUMMARY_FILE_PATH}/${LIGAND}.txt'
+  echo "Summary file path ${SUMMARY_FILE_PATH}"
+  grep -i "result" ${LIGAND} > "${SUMMARY_FILE_PATH}/${LIGAND}.txt"
 
  done
 
