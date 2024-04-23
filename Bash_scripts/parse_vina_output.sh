@@ -39,6 +39,8 @@ done
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
 declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_SDF[*]}"))
 
+echo $LIGANDS_PDBQT
+echo $LIGANDS
 
 for LIGAND in "${LIGANDS[@]}"
  do
