@@ -36,19 +36,13 @@ while getopts ":he:o:" option; do
    esac
 done
 
-echo "peo"
-echo "${LIGANDS_PDBQT_PATH}"
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
-
-echo "ligands pdbqt ${LIGANDS_PDBQT}"
 declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_PDBQT[*]}"))
-
-
 
 for LIGAND in "${LIGANDS[@]}"
  do
   echo "Summary file path ${SUMMARY_FILE_PATH}"
-  grep -i "result" ${LIGANDS_PDBQT_PATH}/${LIGAND} #> "${SUMMARY_FILE_PATH}/${LIGAND}.txt"
+  grep -i "result" "${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt" > "${SUMMARY_FILE_PATH}/${LIGAND}.txt"
 
  done
 
