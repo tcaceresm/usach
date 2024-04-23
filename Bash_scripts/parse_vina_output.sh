@@ -21,7 +21,7 @@ Help()
 ############################################################
 # Get the options
 
-while getopts ":hde:" option; do
+while getopts ":heo:" option; do
    case $option in
       h) # Print this help
          Help
