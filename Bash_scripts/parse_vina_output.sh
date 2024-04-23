@@ -37,7 +37,7 @@ while getopts ":heo:" option; do
 done
 
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
-declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_SDF[*]}"))
+declare -a LIGANDS=($(sed "s/.pdbqt//g" <<< "${LIGANDS_SDF[*]}"))
 
 
 for LIGAND  in "${LIGANDS[@]}"
