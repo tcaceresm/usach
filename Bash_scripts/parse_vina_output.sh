@@ -37,7 +37,7 @@ while getopts ":heo:" option; do
 done
 
 echo "peo"
-echo $LIGANDS_PDBQT_PATH
+echo "${LIGANDS_PDBQT_PATH}"
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
 
 echo "ligands pdbqt ${LIGANDS_PDBQT}"
