@@ -25,7 +25,7 @@ get_smiles <- function(CIDs){
   return(smiles)
 }
 # Data --------------------------------------------------------------------
-data_path <- '/home/tcaceres/Documents/USACH/experimental_data/'
+data_path <- '~/Escritorio/tcaceres/docking/'
 hinokiflavone <- read.csv(paste0(data_path, 'hinokiflavone.csv'), sep = ';')
 quercetin <- read.csv(paste0(data_path, 'quercetin.csv'), sep = ';')
 
@@ -61,10 +61,11 @@ hinokiflavone_enumerate <- hinokiflavone_enumerate[, N_protomer := sequence(.N),
 hinokiflavone_CID_protomer <- paste0(hinokiflavone_enumerate$PubChemCID, '_', hinokiflavone_enumerate$N_protomer)
 write.csv(hinokiflavone_enumerate, '../hinokiflavone_enumerate_processed.txt', row.names = F)
 
-quercetin_enumerate <- read.csv('../quercetin_enumerate.txt')
+quercetin_enumerate <- read.csv('~/Escritorio/tcaceres/docking/quercetin_enumerate.txt')
 quercetin_enumerate <- data.table::data.table(quercetin_enumerate)
 quercetin_enumerate <- quercetin_enumerate[, N_protomer := sequence(.N), by = c("PubChemCID")]
 quercetin_CID_protomer <- paste0(quercetin_enumerate$PubChemCID, '_', quercetin_enumerate$N_protomer)
+write.csv(quercetin_enumerate, '~/Escritorio/tcaceres/docking/quercetine_enumerate_processed.txt', row.names = F)
 
 # SDF modification --------------------------------------------------------
 
