@@ -7,8 +7,9 @@
 
 #library(webchem)
 library(dplyr)
-#library(PubChemR)
+library(PubChemR)
 library(ChemmineR)
+library(Rcpi)
 
 # Funcion -----------------------------------------------------------------
 
@@ -25,7 +26,7 @@ get_smiles <- function(CIDs){
   return(smiles)
 }
 # Data --------------------------------------------------------------------
-data_path <- '~/Escritorio/tcaceres/docking/'
+data_path <- '~/Escritorio/tcaceres/docking/correlacion/to_docking/'
 hinokiflavone <- read.csv(paste0(data_path, 'hinokiflavone.csv'), sep = ';')
 quercetin <- read.csv(paste0(data_path, 'quercetin.csv'), sep = ';')
 
@@ -43,8 +44,8 @@ quercetin$SMILES <- get_smiles(quercetin$PubChemCID)
 
 # Save Data ---------------------------------------------------------------
 
-write.csv(hinokiflavone, '../hinokiflavone_smiles.csv', row.names = F)
-write.csv(quercetin, '../quercetin_smiles.csv', row.names = F)
+write.csv(hinokiflavone, '~/Escritorio/tcaceres/docking/correlacion/to_docking/hinokiflavone_smiles.csv', row.names = F)
+write.csv(quercetin, '~/Escritorio/tcaceres/docking/correlacion/to_docking/quercetin_smiles.csv', row.names = F)
 
 #ahora que tengo los smiles, en MOE calculo el estado de protonación (enumerate),
 # y genero los archivos hinokiflavone2dock.sdf y quercetin2dock.sdf

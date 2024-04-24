@@ -13,12 +13,14 @@ library(dplyr)
 
 # Datos -------------------------------------------------------------------
 # Summary files path
-# Hinokiflavone
-summary_files_path <- '~/Escritorio/tcaceres/docking/correlacion/to_docking/vina_out_hinakiflavone/summary/'
+# Hinokiflkavone or quercetin
+database <- 'quercetin'
+
+summary_files_path <- sprintf('~/Escritorio/tcaceres/docking/correlacion/to_docking/vina_out_%s/summary/', database)
 summary_files <- list.files(summary_files_path)
 
 
-df_summaries <- as.data.frame(matrix(nrow=142, ncol=2))
+df_summaries <- as.data.frame(matrix(nrow=length(summary_files), ncol=2))
 colnames(df_summaries) <- c('PubChemCID_protomer', 'kcal/mol')
 
 for (i in 1:length(summary_files)) {
@@ -49,6 +51,7 @@ df_summaries$N_protomer <- as.integer(df_summaries$N_protomer)
 # Unión de los datos de energía al DF original ----------------------------
 
 
-hinokiflavone <- read.csv('~/Escritorio/tcaceres/docking/hinokiflavone_enumerate_processed.txt')
+datos_original <- read.csv(sprintf('~/Escritorio/tcaceres/docking/%s_enumerate_processed.txt', database))
 
-merged_df <- left_join(hinokiflavone, df_summaries, by=c('PubChemCID', 'N_protomer'))
+merged_df <- left_join(datos_original, df_summaries, by=c('PubChemCID', 'N_protomer'))
+write.csv(merged_df, sprintf('~/Escritorio/tcaceres/docking/correlacion/to_docking/vina_out_%s/data.csv', database), row.names = F)
