@@ -35,9 +35,12 @@ extract_DrugOBECFP4 <- function (molecules, type = c("smile", "sdf"))
 quercetin <- read.csv('~/Escritorio/tcaceres/docking/correlacion/to_docking/vina_out_quercetin/data.csv')
 quercetin <- quercetin %>% filter(N_protomer == 1)
 
+hinokiflavone <- read.csv('~/Escritorio/tcaceres/docking/correlacion/to_docking/vina_out_hinakiflavone/data.csv')
+hinokiflavone <- hinokiflavone %>% filter(N_protomer == 1)
+
 # Cálculo de Fingerprints y matriz de tanimoto -------------------------------------------------
 
-fingerprints <- extract_DrugOBECFP4(quercetin$SMILES, type = 'smile')
+fingerprints <- extract_DrugOBECFP4(hinokiflavone$SMILES, type = 'smile')
 fpset <- as(fingerprints, "FPset")
 
 n <- length(fpset)
@@ -53,16 +56,6 @@ distance_matrix <- as.dist(1 - similarity_matrix)
 # Realizar clustering jerárquico
 cluster_result <- hclust(distance_matrix, method = "complete")
 
-# # Encontrar los vecinos más cercanos para cada punto
-# K <- 5
-# knn_result <- FNN::knn(index = 1:nrow(distance_matrix), query = 1:nrow(distance_matrix), k = K, dist = distance_matrix)
-# 
-# # Visualizar los resultados
-# table(knn_result)
-
-# Puedes elegir el número de clusters utilizando dendrogramas, por ejemplo
-plot(cluster_result, pch=50, col=cutree(cluster_result, k=5))
-
 # Cortar el dendrograma para obtener k clusters
 k_clusters <- 5 # Cambia este valor al número de clusters que deseas mostrar
 clusters <- cutree(cluster_result, k = k_clusters)
@@ -71,10 +64,11 @@ clusters <- cutree(cluster_result, k = k_clusters)
 plot(cluster_result, main = paste("Dendrograma con", k_clusters, "clusters"))
 rect.hclust(cluster_result, k = k_clusters, border = 2)
 
-clusters_data <- split(quercetin, clusters)
-write.csv(clusters_data[2], '~/Escritorio/caca.csv', row.names = F)
+clusters_data <- split(hinokiflavone, clusters)
 
+for (i in 1:length(clusters_data)) {
+    df <- as.data.frame(clusters_data[i])
+    write.csv(df, sprintf('~/Escritorio/tcaceres/docking/correlacion/to_docking/clusters_hinakiflavone/cluster%s.csv', i), row.names=F)
+    print(cor(df[,3], df[,8], use = 'na'))
+}
 
-cluster1 <- (as.data.frame(clusters_data[3]))
-
-cor(cluster1$X3.Relative_Inhibition_Rate, cluster1$X3.kcal.mol, use = 'na')

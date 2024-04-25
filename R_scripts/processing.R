@@ -62,7 +62,7 @@ hinokiflavone_enumerate <- hinokiflavone_enumerate[, N_protomer := sequence(.N),
 hinokiflavone_CID_protomer <- paste0(hinokiflavone_enumerate$PubChemCID, '_', hinokiflavone_enumerate$N_protomer)
 write.csv(hinokiflavone_enumerate, '../hinokiflavone_enumerate_processed.txt', row.names = F)
 
-quercetin_enumerate <- read.csv('~/Escritorio/tcaceres/docking/quercetin_enumerate.txt')
+quercetin_enumerate <- read.csv('~/Escritorio/tcaceres/docking/correlacion/to_docking/quercetin_enumerate.txt')
 quercetin_enumerate <- data.table::data.table(quercetin_enumerate)
 quercetin_enumerate <- quercetin_enumerate[, N_protomer := sequence(.N), by = c("PubChemCID")]
 quercetin_CID_protomer <- paste0(quercetin_enumerate$PubChemCID, '_', quercetin_enumerate$N_protomer)
@@ -71,9 +71,9 @@ write.csv(quercetin_enumerate, '~/Escritorio/tcaceres/docking/quercetine_enumera
 # SDF modification --------------------------------------------------------
 
 # Spliteo los archivos, para tener un archivo sdf por cada ligando y protomero
-sdf_data <- ChemmineR::read.SDFset('/home/tcaceres/Documents/USACH/experimental_data/to_docking/quercetin2dock.sdf')
+sdf_data <- ChemmineR::read.SDFset('~/Escritorio/tcaceres/docking/correlacion/to_docking/quercetin2dock.sdf')
 ChemmineR::write.SDFsplit(x=sdf_data, filetag = 'Ligand', nmol=1) 
 # 'nmol' defines the number of molecules to write to each file 
 
-setwd('/home/tcaceres/Documents/USACH/experimental_data/to_docking/quercetin/')
+setwd('~/Escritorio/tcaceres/docking/correlacion/to_docking/sdf_quercetin/')
 file.rename(list.files('./'), to=sprintf('%s.sdf', quercetin_CID_protomer))

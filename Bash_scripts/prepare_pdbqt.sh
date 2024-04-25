@@ -21,7 +21,7 @@ Help()
 ############################################################
 # Get the options
 
-while getopts ":hde:" option; do
+while getopts ":hd:e:" option; do
    case $option in
       h) # Print this help
          Help
@@ -48,7 +48,7 @@ declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_SDF[*]}"))
 for LIGAND in "${LIGANDS[@]}"
    do
     echo "Converting ${LIGAND} to PDBQT format"
-    /home/pc-usach-cm/.local/bin/mk_prepare_ligand.py -i '${LIGANDS_SDF_PATH}/${LIGAND}.sdf' -o "${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt"
+    /home/pc-usach-cm/.local/bin/mk_prepare_ligand.py -i "${LIGANDS_SDF_PATH}/${LIGAND}.sdf" -o "${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt"
     echo "Done: ${LIGAND}"
    done
    

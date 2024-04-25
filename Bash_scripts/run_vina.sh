@@ -24,7 +24,7 @@ Help()
 ############################################################
 # Get the options
 
-while getopts ":hrlco:" option; do
+while getopts ":hr:l:c:o:" option; do
    case $option in
       h) # Print this help
          Help
@@ -44,7 +44,7 @@ while getopts ":hrlco:" option; do
 done
 
 declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
-declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_SDF[*]}"))
+declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_PDBQT[*]}"))
 
 
 for LIGAND  in "${LIGANDS[@]}"
