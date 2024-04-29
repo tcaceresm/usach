@@ -50,7 +50,7 @@ declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_PDBQT[*]}"))
 for LIGAND  in "${LIGANDS[@]}"
  do
   echo "Docking ${ligand}"
-  /home/pc-usach-cm/Documentos/autodock_vina_1_1_2_linux_x86/bin/vina --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND} --out ${OUTPUT_PATH}/${LIGAND}
+  /home/pc-usach-cm/Documentos/autodock_vina_1_1_2_linux_x86/bin/vina --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND} --out ${OUTPUT_PATH}/${LIGAND} --log "${OUTPUT_PATH}/${LIGAND}.log"
  done
 
 echo "Done!"

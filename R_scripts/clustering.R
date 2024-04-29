@@ -68,7 +68,7 @@ clusters_data <- split(hinokiflavone, clusters)
 
 for (i in 1:length(clusters_data)) {
     df <- as.data.frame(clusters_data[i])
-    write.csv(df, sprintf('~/Escritorio/tcaceres/docking/correlacion/to_docking/clusters_hinakiflavone/cluster%s.csv', i), row.names=F)
+    #write.csv(df, sprintf('~/Escritorio/tcaceres/docking/correlacion/to_docking/clusters_hinakiflavone/cluster%s.csv', i), row.names=F)
     print(cor(df[,3], df[,8], use = 'na'))
 }
 

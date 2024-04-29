@@ -72,8 +72,10 @@ write.csv(quercetin_enumerate, '~/Escritorio/tcaceres/docking/quercetine_enumera
 
 # Spliteo los archivos, para tener un archivo sdf por cada ligando y protomero
 sdf_data <- ChemmineR::read.SDFset('~/Escritorio/tcaceres/docking/correlacion/to_docking/quercetin2dock.sdf')
+setwd('~/Escritorio/tcaceres/docking/correlacion/to_docking/sdf_quercetin/')
+
 ChemmineR::write.SDFsplit(x=sdf_data, filetag = 'Ligand', nmol=1) 
 # 'nmol' defines the number of molecules to write to each file 
 
-setwd('~/Escritorio/tcaceres/docking/correlacion/to_docking/sdf_quercetin/')
+
 file.rename(list.files('./'), to=sprintf('%s.sdf', quercetin_CID_protomer))
