@@ -1,0 +1,1 @@
+sed -i 's/Nombre\t|\t//g' flavones_modified.mol2
