@@ -76,8 +76,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     SORTED_FILE="$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb"
     > $SORTED_FILE
 
-    echo $SORTED_FILE
-
     # Leer el archivo temporal y concatenar las conformaciones ordenadas
     while IFS= read -r line; do
         model_num=$(echo "$line" | awk '{print $2}')
@@ -88,6 +86,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # cat $SORTED_FILE
 
     # Limpiar archivos temporales
-    #rm -rf $TEMP_FILE $CONFORMATIONS_DIR
+    rm -rf $CONFORMATIONS_DIR/model_*.pdb
 
 done
