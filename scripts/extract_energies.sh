@@ -31,8 +31,13 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
 
     ENERGY_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/temp_energy_values.txt"
+    sed -i 's/ /,/g' $ENERGY_FILE
+
     TMP_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/tmp.txt"
+    
     seq $(cat $ENERGY_FILE | wc -l) | sed -E "s/.+/${LIGAND_NAME}/" > $TMP_FILE
 
     paste -d ',' $ENERGY_FILE $TMP_FILE > "${IPATH}/data/${LIGAND_NAME}/pdb/${LIGAND_NAME}_scores.csv"
+    
+    rm $TMP_FILE
 done
