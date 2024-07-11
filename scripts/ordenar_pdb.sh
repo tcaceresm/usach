@@ -86,6 +86,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # cat $SORTED_FILE
 
     # Limpiar archivos temporales
-    rm -rf $TEMP_FILE $CONFORMATIONS_DIR
+    #rm -rf $TEMP_FILE $CONFORMATIONS_DIR
 
 done
