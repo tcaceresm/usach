@@ -1,8 +1,8 @@
 #!/bin/bash
 
-############################################
-# Transformación de formato .dlg a .pdbqt  #
-############################################
+################################################
+# Transformación de formato dlg a pdbqt y pdb  #
+################################################
 
 ############################################################
 # Help
@@ -37,10 +37,9 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
 
     echo "Converting $DLG_FILE to $LIGAND_PDBQT"
-
-    # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
+ 
+    # Crear un directorio temporal para almacenar los archivos
     PDBQT_DIR="${OPATH}/${LIGAND_NAME}/pdbqt"
-    # Crear un directorio temporal para almacenar las conformaciones
     mkdir -p $PDBQT_DIR
 
     grep 'DOCKED' $DLG_FILE > $LIGAND_PDBQT
