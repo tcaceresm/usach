@@ -12,7 +12,7 @@ Help() {
     echo "To save a log file and also print the status, run: ordenar_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
-    echo "d     Input directory containing dlg files."
+    echo "d     Input directory containing pdb files."
     echo "f     Output directory."
 }
 
