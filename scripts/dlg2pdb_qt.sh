@@ -59,6 +59,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     mkdir -p $PDB_DIR
 
-    obabel -ipdbqt $LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
+    obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
 
 done
