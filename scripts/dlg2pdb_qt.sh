@@ -35,11 +35,14 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
+    LIGAND_PDB="$LIGAND_NAME.pdb"
 
-    echo "Converting $DLG_FILE to $LIGAND_PDBQT"
+    echo "Converting $DLG_FILE to $LIGAND_PDBQT and $LIGAND_PDB"
  
     # Crear un directorio temporal para almacenar los archivos
     PDBQT_DIR="${OPATH}/${LIGAND_NAME}/pdbqt"
+    PDB_DIR="${OPATH}/${LIGAND_NAME}/pdb"
+    
     mkdir -p $PDBQT_DIR
 
     grep 'DOCKED' $DLG_FILE > $LIGAND_PDBQT
@@ -53,5 +56,9 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     mv $LIGAND_PDBQT $PDBQT_DIR
 
     echo "Converted $DLG_FILE to $LIGAND_PDBQT"
+
+    mkdir -p $PDB_DIR
+
+    obabel -ipdbqt $LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
 
 done
