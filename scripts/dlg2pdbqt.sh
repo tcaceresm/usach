@@ -43,7 +43,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     mkdir -p $PDBQT_DIR
 
     grep 'DOCKED' $DLG_FILE > $LIGAND_PDBQT
-    grep -v 'FINAL DOCKET STATE' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
+    grep -v 'FINAL DOCKED STATE' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
     sed -i 's/DOCKED: //g' $LIGAND_PDBQT
     sed -i 's/USER/REMARK/g' $LIGAND_PDBQT
     grep -v 'MODEL' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
