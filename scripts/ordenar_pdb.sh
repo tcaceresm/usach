@@ -12,8 +12,7 @@ Help() {
     echo "To save a log file and also print the status, run: ordenar_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
-    echo "d     Input directory containing pdb files."
-    echo "f     Output directory."
+    echo "d     Input directory containing dlg files."
 }
 
 while getopts ":hd:i:f:o:" option; do
@@ -33,7 +32,8 @@ done
 
 for DLG_FILE in "$IPATH"/*.dlg; do
 
-    LIGAND_NAME=$(basename $DLG_FILE .dlg)
+    LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
+    LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
     
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
     CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
