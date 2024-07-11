@@ -34,11 +34,12 @@ done
 for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
+    LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
 
     echo "Converting $DLG_FILE to $LIGAND_PDBQT"
 
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-    PDBQT_DIR="${OPATH}/${LIGAND_PDBQT}/"
+    PDBQT_DIR="${OPATH}/${LIGAND_NAME}/pdbqt"
     # Crear un directorio temporal para almacenar las conformaciones
     mkdir -p $PDBQT_DIR
 
