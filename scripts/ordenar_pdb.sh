@@ -74,7 +74,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     # Crear un archivo final con las conformaciones ordenadas
     SORTED_FILE="sorted_conformations.pdb"
-    > $SORTED_FILE
+    > $CONFORMATIONS_DIR/$SORTED_FILE
 
     echo $SORTED_FILE
 
