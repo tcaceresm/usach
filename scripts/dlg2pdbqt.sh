@@ -38,7 +38,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     echo "Converting $DLG_FILE to $LIGAND_PDBQT"
 
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-    CONFORMATIONS_DIR="${OPATH}/${LIGAND_PDBQT}/"
+    PDBQT_DIR="${OPATH}/${LIGAND_PDBQT}/"
     # Crear un directorio temporal para almacenar las conformaciones
     mkdir -p $CONFORMATIONS_DIR
 
@@ -49,6 +49,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     grep -v 'MODEL' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
     grep -v '^DOCKED: USER\s*_' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
     grep -v '^DOCKED: USER\s*x\s*y\s*z' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
+
+    mv $LIGAND_PDBQT $PDBQT_DIR
 
     echo "Converted $DLG_FILE to $LIGAND_PDBQT"
 
