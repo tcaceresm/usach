@@ -45,11 +45,11 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     grep 'DOCKED' $DLG_FILE > $LIGAND_PDBQT
     grep -v 'FINAL DOCKED STATE' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
+    grep -v '^DOCKED: USER\s*_' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
+    grep -v '^DOCKED: USER\s*x\s*y\s*z' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
     sed -i 's/DOCKED: //g' $LIGAND_PDBQT
     sed -i 's/USER/REMARK/g' $LIGAND_PDBQT
     grep -v 'MODEL' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
-    grep -v '^DOCKED: USER\s*_' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
-    grep -v '^DOCKED: USER\s*x\s*y\s*z' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
 
     mv $LIGAND_PDBQT $PDBQT_DIR
 
