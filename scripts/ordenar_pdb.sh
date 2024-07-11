@@ -22,8 +22,6 @@ while getopts ":hd:i:f:o:" option; do
             exit;;
         d)  # Enter the input directory
             IPATH=$OPTARG;;
-        f)  # Output directory
-            OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -36,8 +34,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
     
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-    CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
-    TEMP_FILE="${OPATH}/${LIGAND_NAME}/pdb/temp_energy_values.txt"
+    CONFORMATIONS_DIR="${IPATH}/data/${LIGAND_NAME}/pdb"
+    TEMP_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/temp_energy_values.txt"
     PDB_FILE=${CONFORMATIONS_DIR}/$LIGAND_NAME.pdb
     
     # Crear un directorio temporal para almacenar las conformaciones
