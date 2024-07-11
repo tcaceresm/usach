@@ -38,6 +38,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
     CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
     TEMP_FILE="${OPATH}/${LIGAND_NAME}/pdb/temp_energy_values.txt"
+    PDB_FILE=${CONFORMATIONS_DIR}/$LIGAND_NAME.pdb
     
     # Crear un directorio temporal para almacenar las conformaciones
     mkdir -p $CONFORMATIONS_DIR
