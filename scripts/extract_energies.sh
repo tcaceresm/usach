@@ -24,20 +24,30 @@ while getopts ":hd:i:f:o:" option; do
     esac
 done
 
+ALL_LIGAND_ENERGIES=${IPATH}/data/docking_scores.csv
+> $ALL_LIGAND_ENERGIES
+
 for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
-    # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-
-    ENERGY_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/temp_energy_values.txt"
+    LIGAND_PDB_PATH=${IPATH}/data/${LIGAND_NAME}/pdb/
+    ENERGY_FILE="$LIGAND_PDB_PATH/temp_energy_values.txt"
+    
     sed -i 's/ /,/g' $ENERGY_FILE
 
-    TMP_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/tmp.txt"
+    TMP_FILE="$LIGAND_PDB_PATH/tmp.txt"
     
     seq $(cat $ENERGY_FILE | wc -l) | sed -E "s/.+/${LIGAND_NAME}/" > $TMP_FILE
 
-    paste -d ',' $ENERGY_FILE $TMP_FILE > "${IPATH}/data/${LIGAND_NAME}/pdb/${LIGAND_NAME}_scores.csv"
-    
+    # Energies of single ligand
+
+    paste -d ',' $ENERGY_FILE $TMP_FILE > "$LIGAND_PDB_PATH/${LIGAND_NAME}_scores.csv"
+
     rm $TMP_FILE
+   
+    # All ligand energies
+    cat "$LIGAND_PDB_PATH/${LIGAND_NAME}_scores.csv" >> $ALL_LIGAND_ENERGIES
+
+    
 done
