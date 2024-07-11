@@ -40,7 +40,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
     PDBQT_DIR="${OPATH}/${LIGAND_PDBQT}/"
     # Crear un directorio temporal para almacenar las conformaciones
-    mkdir -p $CONFORMATIONS_DIR
+    mkdir -p $PDBQT_DIR
 
     grep 'DOCKED' $DLG_FILE > $LIGAND_PDBQT
     grep -v 'FINAL DOCKET STATE' $LIGAND_PDBQT > temp.pdbqt && mv temp.pdbqt $LIGAND_PDBQT
