@@ -59,6 +59,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     echo "Converted $DLG_FILE to $LIGAND_PDBQT"
 
     mkdir -p $PDB_DIR
+    mkdir -p $SDF_DIR
 
     # Verifica si Open Babel está instalado
     if ! command -v obabel &> /dev/null
