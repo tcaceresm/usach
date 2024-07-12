@@ -13,7 +13,7 @@ Help() {
     echo "p     Path to Biomol2Clust."
 }
 
-while getopts ":hd:i:f:o:" option; do
+while getopts ":hd:n:p:" option; do
     case $option in
         h)  # Print this help
             Help
