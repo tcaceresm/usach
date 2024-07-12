@@ -42,6 +42,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Crear un directorio temporal para almacenar los archivos
     PDBQT_DIR="${OPATH}/${LIGAND_NAME}/pdbqt"
     PDB_DIR="${OPATH}/${LIGAND_NAME}/pdb"
+    SDF_DIR="${OPATH}/${LIGAND_NAME}/sdf"
     
     mkdir -p $PDBQT_DIR
 
@@ -59,7 +60,18 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     mkdir -p $PDB_DIR
 
+    # Verifica si Open Babel está instalado
+    if ! command -v obabel &> /dev/null
+    then
+        echo "Open Babel is not installed. Please install Open Babel and try again."
+        exit 1
+    fi
+
     obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
     echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.pdb"
+
+    obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -osdf -O"${SDF_DIR}/$LIGAND_NAME.sdf"
+    echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.sdf
+
 
 done
