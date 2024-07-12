@@ -71,7 +71,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.pdb"
 
     obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -osdf -O"${SDF_DIR}/$LIGAND_NAME.sdf"
-    echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.sdf
+    echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.sdf"
 
 
 done
