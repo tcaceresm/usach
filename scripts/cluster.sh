@@ -55,7 +55,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     echo "Starting clustering with Biomol2Clust"
     python3 ${BIOMOL2CLUST_PATH}/main.py input=${SDF_DIR}/$LIGAND_NAME.sdf output=${SDF_DIR}/cluster
 
-    if [ -f "${SDF_DIR}/cluster/RESULTS.txt"]; then
+    if [ -f "${SDF_DIR}/cluster/RESULTS.txt" ]; then
         echo "Clustering of $LIGAND_NAME passed succesfully"
     else
         echo "Clustering of $LIGAND_NAME failed"
