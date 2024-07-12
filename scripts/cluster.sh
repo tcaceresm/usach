@@ -46,8 +46,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     fi
 
     # Process SDF to use BioMol2Clust. It requires a M dG=value.
-    sed -i 's/    Estimated Free Energy of Binding/M dG/g' ${SDF_DIR}/$LIGAND_NAME.sdf
-    sed -i 's/\[=(1)+(2)+(3)-(4)\]//g' ${SDF_DIR}/$LIGAND_NAME.sdf
+    sed 's/    Estimated Free Energy of Binding    /M dG/g' ${SDF_DIR}/$LIGAND_NAME.sdf > ${SDF_DIR}/${LIGAND_NAME}_2Clust.sdf
+    sed 's/\[=(1)+(2)+(3)-(4)\]//g' ${SDF_DIR}/$LIGAND_NAME.sdf > ${SDF_DIR}/${LIGAND_NAME}_2Clust.sdf
 
     # Output directory
     mkdir -p ${SDF_DIR}/cluster
