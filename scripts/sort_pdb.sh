@@ -96,6 +96,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
         exit 1
     fi
 
-    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf "${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
 
 done
