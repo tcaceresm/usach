@@ -82,6 +82,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
         cat "$CONFORMATIONS_DIR/model_$model_num.pdb" >> $SORTED_FILE
     done < $TEMP_FILE
 
+    echo "Sorted PDB!"
+
     # Mostrar el archivo ordenado
     # cat $SORTED_FILE
 
@@ -96,6 +98,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
         exit 1
     fi
 
+    echo "Generating sorted SDF file based on sorted PDB"
     obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
 
 done
