@@ -88,4 +88,14 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Limpiar archivos temporales
     rm -rf $CONFORMATIONS_DIR/model_*.pdb
 
+    # Obtener SDF con poses ordenadas
+    # Verifica si Open Babel está instalado
+    if ! command -v obabel &> /dev/null
+    then
+        echo "Open Babel is not installed. Please install Open Babel and try again."
+        exit 1
+    fi
+
+    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf "${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+
 done
