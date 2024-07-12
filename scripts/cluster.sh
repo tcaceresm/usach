@@ -53,7 +53,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     mkdir -p ${SDF_DIR}/cluster
     
     echo "Starting clustering with Biomol2Clust"
-    python3 ${BIOMOL2CLUST_PATH}/main.py input=${SDF_DIR}/${LIGAND_NAME}2Clust.sdf output=${SDF_DIR}/cluster
+    python3 ${BIOMOL2CLUST_PATH}/main.py input=${SDF_DIR}/${LIGAND_NAME}2Clust.sdf output=${SDF_DIR}/cluster min_cluster_size=1
 
     if [ -f "${SDF_DIR}/cluster/RESULTS.txt" ]; then
         echo "Clustering of $LIGAND_NAME passed succesfully"
