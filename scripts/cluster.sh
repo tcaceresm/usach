@@ -46,14 +46,14 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     fi
 
     # Process SDF to use BioMol2Clust. It requires a M dG=value.
-    sed 's/    Estimated Free Energy of Binding    /M dG/g' ${SDF_DIR}/$LIGAND_NAME.sdf > ${SDF_DIR}/${LIGAND_NAME}_2Clust.sdf
-    sed 's/kcal\/mol  \[=(1)+(2)+(3)-(4)\]//g' ${SDF_DIR}/$LIGAND_NAME.sdf > ${SDF_DIR}/${LIGAND_NAME}_2Clust.sdf
+    sed 's/    Estimated Free Energy of Binding    /M dG/g' ${SDF_DIR}/$LIGAND_NAME.sdf > ${SDF_DIR}/${LIGAND_NAME}2Clust.sdf
+    sed 's/kcal\/mol  \[=(1)+(2)+(3)-(4)\]//g' ${SDF_DIR}/${LIGAND_NAME}2Clust.sdf > ${SDF_DIR}/${LIGAND_NAME}2Clust.sdf
 
     # Output directory
     mkdir -p ${SDF_DIR}/cluster
     
     echo "Starting clustering with Biomol2Clust"
-    python3 ${BIOMOL2CLUST_PATH}/main.py input=${SDF_DIR}/$LIGAND_NAME.sdf output=${SDF_DIR}/cluster
+    python3 ${BIOMOL2CLUST_PATH}/main.py input=${SDF_DIR}/${LIGAND_NAME}2Clust.sdf output=${SDF_DIR}/cluster
 
     if [ -f "${SDF_DIR}/cluster/RESULTS.txt" ]; then
         echo "Clustering of $LIGAND_NAME passed succesfully"
