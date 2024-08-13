@@ -4,8 +4,8 @@
 # Help
 ############################################################
 Help() {
-    echo "Syntax: cluster_docking.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: cluster_docking.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Syntax: cluster.sh [-h|d|f|o]"
+    echo "To save a log file and also print the status, run: cluster.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
     echo "d     Input directory containing dlg folder. This is to obtain ligand names."

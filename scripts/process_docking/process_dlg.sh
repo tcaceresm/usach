@@ -32,6 +32,13 @@ while getopts ":hd:i:f:o:" option; do
     esac
 done
 
+# Verifica si Open Babel está instalado
+if ! command -v obabel &> /dev/null
+then
+    echo "Open Babel is not installed. Please install Open Babel and try again."
+    exit 1
+fi
+
 for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
@@ -61,13 +68,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     mkdir -p $PDB_DIR
     mkdir -p $SDF_DIR
-
-    # Verifica si Open Babel está instalado
-    if ! command -v obabel &> /dev/null
-    then
-        echo "Open Babel is not installed. Please install Open Babel and try again."
-        exit 1
-    fi
 
     obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
     echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.pdb"

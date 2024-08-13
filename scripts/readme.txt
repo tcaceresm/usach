@@ -1,3 +1,18 @@
+Eventualmente haré un protocolo
+
+prepare_docking:
+	Scripts para preparar el docking
+	Obtener pdbqts' del receptor y ligando, maps, etc.
+
+run_docking:
+	Scripts para ejecutar el docking, vina o AD
+
+process_docking:
+	Scripts para procesar los resultados del docking de vina o AD
+
+	process_dlg.sh > sort_pdb.sh > extract_energies.sh > obrms > clustering.R
+
+
 El archivo flavones.mol2 proviene de MOE.
 Sin embargo, el nombre de la molecula no es adecuado (NONAME),
 pero el nombre de la molécula aparece en @<TRIPOS>PROPERTY_DATA.
