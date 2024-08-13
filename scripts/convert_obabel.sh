@@ -4,6 +4,7 @@
 # Help
 ############################################################
 Help() {
+    echo "Script used to convert a lot of files using obabel"
     echo "Syntax: convert_obabel.sh [-h|d|i|f|o]"
     echo "To save a log file and also print the status, run: convert_obabel.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"

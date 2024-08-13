@@ -32,7 +32,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
-    
+    echo "Doing for $LIGAND_NAME"    
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
     CONFORMATIONS_DIR="${IPATH}/data/${LIGAND_NAME}/pdb"
     TEMP_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/temp_energy_values.txt"

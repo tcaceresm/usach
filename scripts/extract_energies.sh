@@ -4,8 +4,8 @@
 # Help
 ############################################################
 Help() {
-    echo "Syntax: ordenar_pdb.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: ordenar_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Syntax: extract_energies.sh [-h|d|f|o]"
+    echo "To save a log file and also print the status, run: extrac_eneries.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
     echo "d     Input directory containing dlg files."
@@ -34,7 +34,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     LIGAND_PDB_PATH=${IPATH}/data/${LIGAND_NAME}/pdb/
     ENERGY_FILE="$LIGAND_PDB_PATH/temp_energy_values.txt"
     
-    sed -i 's/ /,/g' $ENERGY_FILE
+    sed -i 's/ /;/g' $ENERGY_FILE
 
     TMP_FILE="$LIGAND_PDB_PATH/tmp.txt"
     
@@ -42,7 +42,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     # Energies of single ligand
 
-    paste -d ',' $ENERGY_FILE $TMP_FILE > "$LIGAND_PDB_PATH/${LIGAND_NAME}_scores.csv"
+    paste -d ';' $ENERGY_FILE $TMP_FILE > "$LIGAND_PDB_PATH/${LIGAND_NAME}_scores.csv"
 
     rm $TMP_FILE
    

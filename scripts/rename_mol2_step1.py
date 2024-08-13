@@ -8,7 +8,10 @@ def replace_noname_with_property_data_name(content):
             if line.startswith('NONAME'):
                 for j in range(i, len(molecule_lines)):
                     if molecule_lines[j].startswith('@<TRIPOS>PROPERTY_DATA'):
-                        property_data_name = molecule_lines[j + 1].replace("Nombre |", "").strip()
+                        property_data_name = molecule_lines[j + 2].replace("Compound |", "").strip()
+                        print(property_data_name)
+                        property_data_name = property_data_name.replace(" ", "_")
+                        print(property_data_name)
                         molecule_lines[i] = property_data_name
                         break
                 break
@@ -18,8 +21,7 @@ def replace_noname_with_property_data_name(content):
     modified_content = modified_content[:-len("\n@<TRIPOS>MOLECULE")]
     return modified_content
 
-# Path to the new uploaded file
-new_file_path = '/mnt/linux_partition/tcaceres/docking/ligandos/flavones/mol2_flavones/flavones.mol2'  # Reemplaza con la ruta correcta a tu archivo
+new_file_path = '/mnt/linux_partition/tcaceres/AS/docking/ligandos/ligands2dock.mol2'  # Reemplaza con la ruta correcta a tu archivo
 
 # Read the original content of the newly uploaded file
 with open(new_file_path, 'r') as file:
@@ -29,7 +31,7 @@ with open(new_file_path, 'r') as file:
 modified_content = replace_noname_with_property_data_name(content)
 
 # Save the modified content to a new file
-modified_new_file_path = '/mnt/linux_partition/tcaceres/docking/ligandos/flavones/mol2_flavones/flavones_noname_replaced.mol2'  # Reemplaza con la ruta deseada para el archivo modificado
+modified_new_file_path = '/mnt/linux_partition/tcaceres/AS/docking/ligandos/ligands2dock_replaced.mol2'  # Reemplaza con la ruta deseada para el archivo modificado
 with open(modified_new_file_path, 'w') as file:
     file.write(modified_content)
 

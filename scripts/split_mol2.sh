@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Archivo de entrada
-input_file="flavones.mol2"
+input_file="ligands2dock_replaced.mol2"
 
 # Directorio de salida
 output_dir="molecules"
@@ -21,9 +21,8 @@ do
         # Si no es la primera molécula, guardar el archivo actual
         if (( file_count > 0 )); then
             # Extraer el nombre de la molécula de current_molecule
-            molecule_name=$(echo "$current_molecule" | grep -A1 "@<TRIPOS>PROPERTY_DATA" | tail -1 | sed 's/Nombre |//')
-            molecule_name=$(echo $molecule_name | tr -d '[:space:]') # Eliminar espacios en blanco
-
+            molecule_name=$(echo "$current_molecule" | grep -A1 "@<TRIPOS>MOLECULE" | tail -1)
+            echo $molecule_name
             # Guardar el contenido de la molécula actual en un archivo
             output_file="$output_dir/$molecule_name.mol2"
             echo "$current_molecule" > "$output_file"
@@ -42,8 +41,7 @@ done < "$input_file"
 
 # Guardar la última molécula
 if [[ -n $current_molecule ]]; then
-    molecule_name=$(echo "$current_molecule" | grep -A1 "@<TRIPOS>PROPERTY_DATA" | tail -1 | sed 's/Nombre |//')
-    molecule_name=$(echo $molecule_name | tr -d '[:space:]') # Eliminar espacios en blanco
+    molecule_name=$(echo "$current_molecule" | grep -A1 "@<TRIPOS>MOLECULE" | tail -1 )
     output_file="$output_dir/$molecule_name.mol2"
     echo "$current_molecule" > "$output_file"
 fi
