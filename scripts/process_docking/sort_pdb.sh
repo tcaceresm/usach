@@ -1,14 +1,15 @@
 #!/bin/bash
 
-#############################################################################
-# Ordena las conformaciones de un archivo PDB en base a la energía de unión #
-#############################################################################
+##########################################################################
+# Sort  ligands' conformations in a PDB file based on binding energy     #
+##########################################################################
 
 ############################################################
 # Help
 ############################################################
 Help() {
-    echo "Syntax: ordenar_pdb.sh [-h|d|f|o]"
+    echo "Sort ligands' conformations in PDB file based on binding energy"
+    echo "Syntax: sort_pdb.sh [-h|d|f|o]"
     echo "To save a log file and also print the status, run: ordenar_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
@@ -27,6 +28,13 @@ while getopts ":hd:i:f:o:" option; do
             exit;;
     esac
 done
+
+# Verifica si Open Babel está instalado
+if ! command -v obabel &> /dev/null
+  then
+    echo "Open Babel is not installed. Please install Open Babel and try again."
+    exit 1
+fi
 
 for DLG_FILE in "$IPATH"/*.dlg; do
 
@@ -91,12 +99,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     rm -rf $CONFORMATIONS_DIR/model_*.pdb
 
     # Obtener SDF con poses ordenadas
-    # Verifica si Open Babel está instalado
-    if ! command -v obabel &> /dev/null
-    then
-        echo "Open Babel is not installed. Please install Open Babel and try again."
-        exit 1
-    fi
+
 
     echo "Generating sorted SDF file based on sorted PDB"
     obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
