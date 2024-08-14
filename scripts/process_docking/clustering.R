@@ -1,4 +1,3 @@
-
 # Libraries ---------------------------------------------------------------
 
 library(ChemmineR)
@@ -63,7 +62,7 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path){
   sdf_file <- ChemmineR::read.SDFset(sdf_path)
 
   
-  # if cluster lenght is only 1, ill consider as "outliers"
+  # if cluster lenght is only 1, i'll consider as "outliers"
   outliers <- NULL
   
   for (cluster_index in seq_along(clusters)) {
@@ -71,7 +70,7 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path){
     cluster <- clusters[[cluster_index]]
     
     if (length(cluster) > 1) {
-      print("ok")
+
       statistics <- rmsd_df %>% 
         filter(as.integer(Index) %in% cluster) %>% 
         summarise(N=n(),
@@ -79,13 +78,13 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path){
                   minEnergy=min(Energia),
                   sdEnergy=sd(Energia)) %>% round(., 3)
       
-      print("ok")
+
       write.SDF(sdf_file[clusters[[cluster_index]]],
                 file = sprintf('%s/cluster%s_size=%s_mean=%s_min=%s_std=%s.sdf',
                                output_path,cluster_index,statistics$N,statistics$meanEnergy,statistics$minEnergy,statistics$sdEnergy
                 )
       )
-      print("ok")
+
     } else {
       outliers <- append(outliers, cluster)
       
@@ -107,69 +106,26 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path){
   )
 }
 
-# Miscellaneous -----------------------------------------------------------
+## End of functions ##
 
 
-# Ejemplo de uso
-rmsd_df <- read.csv('./RMSD_matrix.data', header = F)[, 2:1001]
-rmsd_df <- cbind(data.frame(index=seq(nrow(rmsd_df))), rmsd_df)
-score <- read.csv('../pdb/Quercetina_scores.csv', header = F)
-rmsd_df <- cbind(score, rmsd_df)
-colnames(rmsd_df) <- c("Energia", "Run", "Nombre", "Index", seq(1000))
+# Rscript -----------------------------------------------------------------
+# Arguments should be Ligand_RMSD_matrix.data path, docking scores (sorted) and a cutoff value
+args <- commandArgs()
 
+rmsd_df_path <- args[6]
+docking_scores <- args[7]
+cutoff <- as.numeric(args[8])
+sdf_path <- args[9]
+output_path <- args[10]
 
-rmsd_matrix <- as.matrix(rmsd_df[,5:1004])
+# Run Clustering ----------------------------------------------------------
+# processed_data[1] rmsd_df and processed_data[2] rmsd_matrix
+processed_data <- process_data(rmsd_df_path = rmsd_df_path, scores_path = docking_scores)
 
-# Ejecutar la función
-clusters <- cluster_docking(rmsd_matrix, cutoff = 7.0)
-
-
-a <- process_data(rmsd_df_path = './RMSD_matrix.data', scores_path = '../pdb/Quercetina_scores.csv')
-b <- cluster_docking(rmsd_matrix = a[[2]], cutoff = 5.0)
-write_sdf_clusters(rmsd_df = a[[1]], 
-                   sdf_path = './Quercetina_sorted_conformations.sdf',
-                   clusters = b,
-                   output_path = './cluster_tomi/')
-
-# SDF ---------------------------------------------------------------------
-
-sdf_sorted <- ChemmineR::read.SDFset('./Quercetina_sorted_conformations.sdf')
-
-outliers <- NULL
-
-for (cluster_index in seq_along(clusters)) {
-  
-  cluster <- clusters[[cluster_index]]
-  
-  if (length(cluster) > 1) {
-    
-  energia <- rmsd_df %>% 
-    filter(as.integer(Index) %in% cluster) %>% 
-    summarise(meanEnergy=mean(Energia),
-              minEnergy=min(Energia),
-              sdEnergy=sd(Energia)) %>% round(., 3)
-  
-  
-  write.SDF(sdf_sorted[clusters[[cluster_index]]],
-            file = sprintf('cluster%s_mean=%s_min=%s_std=%s.sdf',
-                           cluster_index,energia$meanEnergy,energia$minEnergy, round(energia$sdEnergy, 3)
-                           )
-  )
-  } else {
-    outliers <- append(outliers, cluster)
-    
-  }
-}
-
-energia <- rmsd_df %>% 
-  filter(as.integer(Index) %in% outliers) %>% 
-  summarise(meanEnergy=mean(Energia),
-            minEnergy=min(Energia),
-            sdEnergy=sd(Energia)) %>% round(., 3)
-
-
-write.SDF(sdf_sorted[outliers],
-          file = sprintf('outliers_mean=%s_min=%s_std=%s.sdf',
-                         energia$meanEnergy,energia$minEnergy, round(energia$sdEnergy, 3)
-                        )
-        )
+clusters <- cluster_docking(rmsd_matrix = processed_data[[2]], cutoff = cutoff)
+write_sdf_clusters(rmsd_df = processed_data[[1]], 
+                   sdf_path = sdf_path,
+                   clusters = clusters,
+                   output_path = output_path)
+print("Done clustering!")
