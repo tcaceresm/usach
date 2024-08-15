@@ -1,4 +1,5 @@
 #!/usr/bin/awk -f
+
 BEGIN {molecule=""}
 /@<TRIPOS>MOLECULE/ {
     if (molecule !="")
