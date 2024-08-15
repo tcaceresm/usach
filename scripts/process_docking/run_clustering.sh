@@ -43,6 +43,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     sdf_path=${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf
     output_path=${SDF_DIR}/cluster/
 
-    Rscript $rmsd_df_path $docking_scores $cutoff $sdf $output_path
+    echo "Performing pose clustering of $LIGAND_NAME"
+
+    Rscript clustering.R $rmsd_df_path $docking_scores $CUTOFF $sdf_path $output_path $LIGAND_NAME
     
 done
