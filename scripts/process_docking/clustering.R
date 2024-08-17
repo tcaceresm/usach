@@ -7,13 +7,13 @@ library(dplyr)
 # Functions ---------------------------------------------------------------
 process_data <- function(rmsd_df_path, scores_path) {
   
-  rmsd_df <- read.csv(rmsd_df_path, header = F)[, 2:1001]
+  rmsd_df <- read.csv(rmsd_df_path, header = F)
+  rmsd_df <- rmsd_df[, 2:ncol(rmsd_df)]
   rmsd_df <- cbind(data.frame(index=seq(nrow(rmsd_df))), rmsd_df)
-  scores <- read.csv(scores_path, header = F)
+  scores <- read.csv(scores_path, header = F, sep = ";")
   rmsd_df <- cbind(scores, rmsd_df)
   colnames(rmsd_df) <- c("Energia", "Run", "Nombre", "Index", seq(nrow(rmsd_df)))
-  rmsd_matrix <- as.matrix(rmsd_df[, 5:1004])
-  
+  rmsd_matrix <- as.matrix(rmsd_df[, 5:ncol(rmsd_df)])
   return (list(rmsd_df, rmsd_matrix))
 }
 
@@ -90,20 +90,23 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
       
     }
   }
-  
-  statistics <- rmsd_df %>% 
-    filter(as.integer(Index) %in% outliers) %>% 
-    summarise(N=n(),
-              meanEnergy=mean(Energia),
-              minEnergy=min(Energia),
-              sdEnergy=sd(Energia)) %>% round(., 3)
-  
-  
-  write.SDF(sdf_file[outliers],
-            file = sprintf('%s/%s_outliers_size=%s_mean=%s_min=%s_std=%s.sdf',
-                           output_path,ligand_name,statistics$N,statistics$meanEnergy,statistics$minEnergy, statistics$sdEnergy
-            )
-  )
+  if (length(outliers) != 0) {
+    statistics <- rmsd_df %>% 
+      filter(as.integer(Index) %in% outliers) %>% 
+      summarise(N=n(),
+                meanEnergy=mean(Energia),
+                minEnergy=min(Energia),
+                sdEnergy=sd(Energia)) %>% round(., 3)
+    
+    
+    write.SDF(sdf_file[outliers],
+              file = sprintf('%s/%s_outliers_size=%s_mean=%s_min=%s_std=%s.sdf',
+                             output_path,ligand_name,statistics$N,statistics$meanEnergy,statistics$minEnergy, statistics$sdEnergy
+              )
+    )l
+    
+  }
+
 }
 
 ## End of functions ##

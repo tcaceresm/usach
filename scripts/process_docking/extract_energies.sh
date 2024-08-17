@@ -32,7 +32,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
     LIGAND_PDB_PATH=${IPATH}/data/${LIGAND_NAME}/pdb/
-    ENERGY_FILE="$LIGAND_PDB_PATH/temp_energy_values.txt"
+    ENERGY_FILE="$LIGAND_PDB_PATH/docking_energies.txt"
     
     sed -i 's/ /;/g' $ENERGY_FILE
 

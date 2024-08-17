@@ -60,13 +60,16 @@ for DLG_FILE in "$IPATH"/*.dlg; do
         }
     /Estimated Free Energy of Binding/ {
         molecule = (molecule $0 "\n")
-        energy = $8; (molecule $0 "\n")
+        #energy = sprintf("%.2f", $8); (molecule $0 "\n")
+        split($0, fields, "=")
+        split(fields[2], energy, " ")
+        energia = sprintf("%.2f", energy[1])
         }
     /ENDMDL/ {
         molecule = (molecule $0 "\n")
         print molecule > out
         close(out)
-        print (energy, run) > energy_file
+        print (energia, run) > energy_file
     }
 
     !(/MODEL/ || /Estimated Free Energy of Binding/ || /ENDMDL/) {

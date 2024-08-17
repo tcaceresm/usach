@@ -35,16 +35,19 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
 
-    SDF_DIR="${IPATH}/${PROCESSED_DLG}/${LIGAND_NAME}/sdf"
-    PDB_DIR="${IPATH}/${PROCESSED_DLG}/${LIGAND_NAME}/pdb"
+    SDF_DIR="${PROCESSED_DLG}/${LIGAND_NAME}/sdf"
+    PDB_DIR="${PROCESSED_DLG}/${LIGAND_NAME}/pdb"
 
     rmsd_df_path=${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data
     docking_scores=${PDB_DIR}/${LIGAND_NAME}_scores.csv
     sdf_path=${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf
     output_path=${SDF_DIR}/cluster/
 
+    mkdir -p ${output_path}
+
     echo "Performing pose clustering of $LIGAND_NAME"
 
     Rscript clustering.R $rmsd_df_path $docking_scores $CUTOFF $sdf_path $output_path $LIGAND_NAME
     
+
 done
