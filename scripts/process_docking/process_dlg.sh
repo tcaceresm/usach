@@ -69,6 +69,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     mkdir -p $PDB_DIR
     mkdir -p $SDF_DIR
+    mkdir -p $MOL2_DIR
 
     obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -opdb -O"${PDB_DIR}/$LIGAND_NAME.pdb"
     echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.pdb"
