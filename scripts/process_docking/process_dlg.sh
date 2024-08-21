@@ -51,6 +51,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     PDBQT_DIR="${OPATH}/${LIGAND_NAME}/pdbqt"
     PDB_DIR="${OPATH}/${LIGAND_NAME}/pdb"
     SDF_DIR="${OPATH}/${LIGAND_NAME}/sdf"
+    MOL2_DIR="${OPATH}/${LIGAND_NAME}/mol2"
     
     mkdir -p $PDBQT_DIR
 
@@ -75,5 +76,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -osdf -O"${SDF_DIR}/$LIGAND_NAME.sdf"
     echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.sdf"
 
+    obabel -ipdbqt ${PDBQT_DIR}/$LIGAND_PDBQT -omol2 -O"${MOL2_DIR}/$LIGAND_NAME.mol2"
+    echo "Converted $LIGAND_PDBQT to $LIGAND_NAME.mol2"
 
 done
