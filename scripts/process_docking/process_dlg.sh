@@ -9,22 +9,22 @@
 ############################################################
 Help() {
     echo "Script used to process dlg output from AD or vina"
-    echo "Syntax: process_dlg.sh [-h|d|f|o]"
+    echo "Syntax: process_dlg.sh [-h|d|o]"
     echo "To save a log file and also print the status, run: process_dlg.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
-    echo "h     Print help"
-    echo "d     Input directory containing dlg files."
-    echo "f     Output directory."
+    echo "h     Print help."
+    echo "d     dlg files directory."
+    echo "o     Output directory."
 }
 
-while getopts ":hd:i:f:o:" option; do
+while getopts ":hd:o:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
             IPATH=$OPTARG;;
-        f)  # Output directory
+        o)  # Output directory
             OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"

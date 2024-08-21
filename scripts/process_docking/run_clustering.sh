@@ -4,13 +4,13 @@
 # Help
 ############################################################
 Help() {
-    echo "Syntax: run_clustering.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: cluster.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Syntax: run_clustering.sh [-h|c|d|n]"
+    echo "To save a log file and also print the status, run: run_clustering.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
     echo "c     RMSD cutoff."
-    echo "d     Input directory containing dlg folder."
-    echo "n     Output folder containing processed folder of ligands."
+    echo "d     dlg files directory."
+    echo "o     Output directory."
 }
 
 while getopts ":hc:d:n:" option; do
@@ -22,7 +22,7 @@ while getopts ":hc:d:n:" option; do
             CUTOFF=$OPTARG;;
         d)  # Enter the input directory
             IPATH=$OPTARG;;
-        n)  # Processed dlg folder
+        o)  # Processed dlg folder
             PROCESSED_DLG=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"

@@ -8,30 +8,33 @@ Help() {
     echo "To save a log file and also print the status, run: extrac_eneries.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
-    echo "d     Input directory containing dlg files."
+    echo "d     dlg files directory."
+    echo "o     Output directory."
 }
 
-while getopts ":hd:i:f:o:" option; do
+while getopts ":hd:o:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
             IPATH=$OPTARG;;
+        o)  # Output directory
+            OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
     esac
 done
 
-ALL_LIGAND_ENERGIES=${IPATH}/data/docking_scores.csv
+ALL_LIGAND_ENERGIES=${OPATH}/docking_scores.csv
 > $ALL_LIGAND_ENERGIES
 
 for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
     LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
-    LIGAND_PDB_PATH=${IPATH}/data/${LIGAND_NAME}/pdb/
+    LIGAND_PDB_PATH=${OPATH}/${LIGAND_NAME}/pdb/
     ENERGY_FILE="$LIGAND_PDB_PATH/docking_energies.txt"
     
     sed -i 's/ /;/g' $ENERGY_FILE

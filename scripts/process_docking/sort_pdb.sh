@@ -13,7 +13,7 @@ Help() {
     echo "To save a log file and also print the status, run: ordenar_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
-    echo "d     Input directory containing dlg files."
+    echo "d     dlg files directory."
 }
 
 while getopts ":hd:i:f:o:" option; do
@@ -23,6 +23,8 @@ while getopts ":hd:i:f:o:" option; do
             exit;;
         d)  # Enter the input directory
             IPATH=$OPTARG;;
+        o)  # Output directory
+            OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -43,8 +45,8 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     echo "Doing for $LIGAND_NAME"    
 
     # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-    CONFORMATIONS_DIR="${IPATH}/data/${LIGAND_NAME}/pdb"
-    ENERGY_FILE="${IPATH}/data/${LIGAND_NAME}/pdb/docking_energies.txt"
+    CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
+    ENERGY_FILE="${OPATH}/${LIGAND_NAME}/pdb/docking_energies.txt"
     PDB_FILE=${CONFORMATIONS_DIR}/$LIGAND_NAME.pdb
         
     # Crear un directorio temporal para almacenar las conformaciones
@@ -106,6 +108,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     # Obtener SDF con poses ordenadas
 
     echo "Generating sorted SDF file based on sorted PDB"
-    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${IPATH}/data/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
 
 done
