@@ -48,6 +48,8 @@ do
     RMSD_FILE="${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_RMSD_matrix.data"
     
     echo "Performing RMSD matrix calculation of ${LIGAND_NAME}"
-    obrms -x ${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf > ${RMSD_FILE}
-
+    obrms -x ${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf > "${RMSD_FILE}_tmp"
+    cat "${RMSD_FILE}_tmp" | awk '{$1=""}1' > "${RMSD_FILE}"
+    rm "${RMSD_FILE}_tmp"
+    
 done

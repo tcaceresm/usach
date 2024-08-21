@@ -8,7 +8,7 @@ library(dplyr)
 process_data <- function(rmsd_df_path, scores_path) {
   
   rmsd_df <- read.csv(rmsd_df_path, header = F)
-  rmsd_df <- rmsd_df[, 2:ncol(rmsd_df)]
+  #rmsd_df <- rmsd_df[, 2:ncol(rmsd_df)]
   rmsd_df <- cbind(data.frame(index=seq(nrow(rmsd_df))), rmsd_df)
   scores <- read.csv(scores_path, header = F, sep = ";")
   rmsd_df <- cbind(scores, rmsd_df)
@@ -103,7 +103,7 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
               file = sprintf('%s/%s_outliers_size=%s_mean=%s_min=%s_std=%s.sdf',
                              output_path,ligand_name,statistics$N,statistics$meanEnergy,statistics$minEnergy, statistics$sdEnergy
               )
-    )l
+    )
     
   }
 
