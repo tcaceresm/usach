@@ -13,7 +13,7 @@ Help() {
     echo "o     Output directory."
 }
 
-while getopts ":hc:d:n:" option; do
+while getopts ":hc:d:o:" option; do
     case $option in
         h)  # Print this help
             Help
