@@ -5,7 +5,7 @@
 ############################################################
 Help() {
     echo "Syntax: extract_energies.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: extrac_eneries.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "To save a log file and also print the status, run: extract_energies.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
     echo "d     dlg files directory."
