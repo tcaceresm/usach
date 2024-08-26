@@ -14,6 +14,7 @@ Help() {
     echo "Options:"
     echo "h     Print help"
     echo "d     dlg files directory."
+    echo "o     Ouput directory."
 }
 
 while getopts ":hd:i:f:o:" option; do
