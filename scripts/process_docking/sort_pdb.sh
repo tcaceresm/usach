@@ -96,9 +96,17 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     > $SORTED_FILE
 
     # Leer el archivo de energías y concatenar las conformaciones ordenadas
+    best_pose=true
+    best_pose_name=
     while IFS= read -r line; do
         model_num=$(echo "$line" | awk '{print $2}')
         cat "$CONFORMATIONS_DIR/model_$model_num.pdb" >> $SORTED_FILE
+
+        if $best_pose
+        then
+            cat "$CONFORMATIONS_DIR/model_$model_num.pdb" > "$CONFORMATIONS_DIR/${LIGAND_NAME}_best_pose.pdb"
+            best_pose=false
+        fi
     done < $ENERGY_FILE
 
     echo "Sorted PDB!"
@@ -110,5 +118,6 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     echo "Generating sorted SDF file based on sorted PDB"
     obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+    obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_best_pose.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_best_pose.sdf"
 
 done

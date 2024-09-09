@@ -57,7 +57,7 @@ cluster_docking <- function(rmsd_matrix, cutoff = 2.0) {
 
 
 
-write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_name){
+write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_name, cutoff){
   
   sdf_file <- ChemmineR::read.SDFset(sdf_path)
 
@@ -80,8 +80,8 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
       
 
       write.SDF(sdf_file[clusters[[cluster_index]]],
-                file = sprintf('%s/%s_cluster%s_size=%s_mean=%s_min=%s_std=%s.sdf',
-                               output_path,ligand_name,cluster_index,statistics$N,statistics$meanEnergy,statistics$minEnergy,statistics$sdEnergy
+                file = sprintf('%s/%s_cutoff=%s_cluster%s_size=%s_mean=%s_min=%s_std=%s.sdf',
+                               output_path,ligand_name,cutoff,cluster_index,statistics$N,statistics$meanEnergy,statistics$minEnergy,statistics$sdEnergy
                 )
       )
 
@@ -100,8 +100,8 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
     
     
     write.SDF(sdf_file[outliers],
-              file = sprintf('%s/%s_outliers_size=%s_mean=%s_min=%s_std=%s.sdf',
-                             output_path,ligand_name,statistics$N,statistics$meanEnergy,statistics$minEnergy, statistics$sdEnergy
+              file = sprintf('%s/%s_cutoff=%s_outliers_size=%s_mean=%s_min=%s_std=%s.sdf',
+                             output_path,ligand_name,cutoff,statistics$N,statistics$meanEnergy,statistics$minEnergy, statistics$sdEnergy
               )
     )
     
@@ -132,5 +132,6 @@ write_sdf_clusters(rmsd_df = processed_data[[1]],
                    sdf_path = sdf_path,
                    clusters = clusters,
                    output_path = output_path,
-                   ligand_name = ligand_name)
+                   ligand_name = ligand_name,
+                   cutoff = cutoff)
 print("Done clustering!")

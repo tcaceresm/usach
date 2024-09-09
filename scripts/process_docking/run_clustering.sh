@@ -41,7 +41,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
     rmsd_df_path=${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data
     docking_scores=${PDB_DIR}/${LIGAND_NAME}_scores.csv
     sdf_path=${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf
-    output_path=${SDF_DIR}/cluster/
+    output_path=${SDF_DIR}/cluster/${CUTOFF}
 
     mkdir -p ${output_path}
 
