@@ -30,6 +30,9 @@ while getopts ":hc:d:o:" option; do
     esac
 done
 
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+
 for DLG_FILE in "$IPATH"/*.dlg; do
 
     LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
@@ -47,7 +50,7 @@ for DLG_FILE in "$IPATH"/*.dlg; do
 
     echo "Performing pose clustering of $LIGAND_NAME"
 
-    Rscript clustering.R $rmsd_df_path $docking_scores $CUTOFF $sdf_path $output_path $LIGAND_NAME
+    Rscript ${SCRIPT_PATH}/clustering.R $rmsd_df_path $docking_scores $CUTOFF $sdf_path $output_path $LIGAND_NAME
     
 
 done
