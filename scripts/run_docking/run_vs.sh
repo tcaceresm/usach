@@ -14,8 +14,8 @@ Help()
    echo "Options:"
    echo "h     Print help"
    echo "r     Receptor map file (fld) directory. All pocket folder should be inside this directory"
-   echo "o     Output directory"
    echo "l     Ligands PDBQT"
+   echo "o     Output directory"
    echo "n     N runs"
    
 }
@@ -25,7 +25,7 @@ Help()
 ############################################################
 # Get the options
 
-while getopts ":hl:n:" option; do
+while getopts ":hr:l:o:n:" option; do
    case $option in
       h) # Print this help
          Help
