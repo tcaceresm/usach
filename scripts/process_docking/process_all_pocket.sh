@@ -45,11 +45,11 @@ do
     SITE_DLG=${IPATH}/sitio_${i}/
     OUTPUT_PATH_POCKET=${OUTPUT_PATH}/sitio_${i}/data/
 
-    if [ ! -d ${OUTPUT_PATH_POCKET}]
+    if [ ! -d ${OUTPUT_PATH_POCKET} ]
     then
      mkdir ${OUTPUT_PATH_POCKET}
     fi
-    
+
     echo "Doing for site ${i}"
 
     ${SCRIPT_PATH}/process_output.sh -d ${SITE_DLG} -o ${OUTPUT_PATH_POCKET} -c 2.0
