@@ -20,6 +20,7 @@ Help() {
     echo "h     Print help."
     echo "d     dlg files directory."
     echo "o     Output directory."
+    echo "c     Clustering cutoff"
 }
 
 while getopts ":hd:o:c:" option; do
