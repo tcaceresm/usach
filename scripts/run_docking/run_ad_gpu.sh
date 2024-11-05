@@ -55,7 +55,7 @@ fi
 for LIGAND  in "${LIGANDS_PDBQT[@]}"
  do
   echo "Docking ${LIGAND}"
-  /usr/local/bin/autodock_gpu_64wi -L ${LIGANDS_PDBQT_PATH}/${LIGAND} -M ${RECEPTOR_FLD}/*.maps.fld --nrun $NRUNS --resnam ${OUTPUT_PATH}/${LIGAND}
+  /usr/local/bin/autodock_gpu_64wi -L ${LIGANDS_PDBQT_PATH}/"${LIGAND}" -M ${RECEPTOR_FLD}/*.maps.fld --nrun $NRUNS --resnam ${OUTPUT_PATH}/"${LIGAND}"
   done
 
 echo "Done!"
