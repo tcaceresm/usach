@@ -47,7 +47,7 @@ declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
 
 #echo ${LIGANDS_PDBQT[@]}
 
-if [ ! -d $OUTPUT_PATH ]
+if [[ ! -d $OUTPUT_PATH ]]
 then
  mkdir $OUTPUT_PATH
 fi

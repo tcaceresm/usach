@@ -21,15 +21,13 @@ Help() {
 ############################################################
 # Get the options
 
-while getopts ":hd:o:c:" option; do
+while getopts ":hd:c:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the DLG output directory
             IPATH=$OPTARG;;
-        o)  # Output directory
-            OPATH=$OPTARG;;
         c)  # Clustering cutoff
             CUTOFF=$OPTARG;;
         \?) # Invalid option
@@ -43,16 +41,18 @@ SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 for i in {1..14}
 do
     SITE_DLG=${IPATH}/sitio_${i}/
-    OUTPUT_PATH_POCKET=${OUTPUT_PATH}/sitio_${i}/data/
+    OUTPUT_PATH_POCKET=${IPATH}/sitio_${i}/processed_output/
 
-    if [ ! -d ${OUTPUT_PATH_POCKET} ]
+    if [[ ! -d ${OUTPUT_PATH_POCKET} ]]
     then
      mkdir ${OUTPUT_PATH_POCKET}
     fi
 
+    echo "###################"
     echo "Doing for site ${i}"
+    echo "###################"
 
-    ${SCRIPT_PATH}/process_output.sh -d ${SITE_DLG} -o ${OUTPUT_PATH_POCKET} -c 2.0
+    ${SCRIPT_PATH}/process_output.sh -d ${SITE_DLG} -o ${OUTPUT_PATH_POCKET} -c ${CUTOFF}
 
     echo "Done for site ${i}"
 done

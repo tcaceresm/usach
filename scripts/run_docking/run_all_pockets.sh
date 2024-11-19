@@ -10,7 +10,7 @@ Help()
    # Display Help
 
    echo "Syntax: [-hrlco]"
-   echo "To save a log file and also print the status, run: bash prepare_odbqt.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+   echo "To save a log file and also print the status, run: bash run_all_pockets.sh -d \$DIRECTORY | tee -a \$LOGFILE"
    echo "Options:"
    echo "h     Print help"
    echo "r     Receptor map file (fld) directory. All pocket folder should be inside this directory"
@@ -50,10 +50,14 @@ for i in {1..14}
 do
     RECEPTOR_FLD_POCKET=${RECEPTOR_FLD}/sitio_${i}/
     OUTPUT_PATH_POCKET=${OUTPUT_PATH}/sitio_${i}
-
+    
+    if [[ ! -d $OUTPUT_PATH ]]
+    then
+      mkdir $OUTPUT_PATH
+    fi
     echo "Doing for site ${i}"
 
-    ${SCRIPT_PATH}/run_ad_gpu.sh -r ${RECEPTOR_FLD_POCKET} -l ${LIGANDS_PDBQT_PATH} -o ${OUTPUT_PATH_POCKET} -n 1000
+    ${SCRIPT_PATH}/run_ad_gpu.sh -r ${RECEPTOR_FLD_POCKET} -l ${LIGANDS_PDBQT_PATH} -o ${OUTPUT_PATH_POCKET} -n  ${NRUNS}
 
     echo "Done for site ${i}"
 done
