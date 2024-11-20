@@ -6,14 +6,13 @@
 # Help
 ############################################################
 Help() {
-    echo "Script used to process AD output"
-    echo "Syntax: process_output.sh [-h|d|o]"
-    echo "To save a log file and also print the status, run: process_dlg.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Script used to process AD output for all 14 sites"
+    echo "Syntax: process_all_pocket.sh [-h|d|o]"
+    echo "To save a log file and also print the status, run: process_all_pocket.sh -d \$DIRECTORY -c CUTOFF | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help."
-    echo "d     dlg files directory."
-    echo "o     Output directory."
-    echo "c     Clustering cutoff"
+    echo "d     dlg files directory. In this folder should be all pocket folders."
+    echo "c     Clustering cutoff for RMSD calculation between poses of same ligand"
 }
 
 ############################################################
