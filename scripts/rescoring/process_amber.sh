@@ -27,6 +27,12 @@ Help()
 
 }
 
+
+# Default values
+
+LIGAND_RESNUMBER=2717
+RST7_FILE="min_no_ntr_noWAT.rst7"
+
 ############################################################
 # Process the input options. Add options as needed.        #
 ############################################################
@@ -75,12 +81,12 @@ fi
 
   cat <<EOF > "./get_rec_lig.in"
 parm ../../../../topo/${LIGAND_NAME}_buried_pocket_vac_com.parm7
-trajin ../min_no_ntr_noWAT.rst7
+trajin ../${RST7_FILE}
 # Save receptor and ligand separated
-strip :2717 # receptor
+strip :${LIGAND_RESNUMBER} # receptor
 trajout receptor.pdb
 run
-strip !(:2717) #ligando
+strip !(:${LIGAND_RESNUMBER}) #ligando
 trajout ${LIGAND_NAME}_GAFF.mol2
 run
 EOF
@@ -104,15 +110,52 @@ echo "######################"
 
 if [[ -z $(which obabel) ]]
 then
- echo "obabel not found."
- echo "Exiting..."
+ echo " obabel not found."
+ echo " Exiting..."
  exit 1
 fi
 
 echo " Processing receptor "
 ${SCRIPT_PATH}/prepare_receptor4.py -r ${IPATH}/docking_score_only/receptor.pdb
+echo "  OK!"
 
 echo
 echo " Processing Ligand "
 
 obabel -i mol2 ${IPATH}/docking_score_only/${LIGAND_NAME}_SYBYL.mol2 -o pdbqt -O ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt
+echo "  OK!"
+
+echo "######################"
+echo "Preparing GPF file    "
+echo "######################"
+
+#-y flag center grid box on ligand
+${SCRIPT_PATH}/prepare_gpf.py -l ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt -r ${IPATH}/docking_score_only/receptor.pdbqt -y -p npts='50,50,50'
+
+if [[ -f "${IPATH}/docking_score_only/receptor.gpf" ]]
+then
+    echo "GPF created!"
+else
+    echo "GPF creation failed."
+    echo "Exiting..."
+fi
+
+echo "###############################"
+echo "Computing maps with AutoGrid."
+echo "Maybe check AGFR, is faster:"
+echo " https://ccsb.scripps.edu/agfr/"
+echo "##############################"
+
+/home/pc-usach-cm/Documentos/autodocksuite-4.2.6-x86_64Linux2/x86_64Linux2/autogrid4 -p ${IPATH}/docking_score_only/receptor.gpf -l ${IPATH}/docking_score_only/receptor.glg
+
+echo "Ok!"
+
+# echo "######################"
+# echo "Preparing DPF file    "
+# echo "######################"
+
+#${SCRIPT_PATH}/prepare_dpf4.py -l ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt -r ${IPATH}/docking_score_only/receptor.pdbqt 
+
+echo "#################################"
+echo "Computing score of input ligand    "
+echo "#################################"
