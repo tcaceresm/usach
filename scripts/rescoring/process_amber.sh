@@ -159,3 +159,7 @@ echo "Ok!"
 echo "#################################"
 echo "Computing score of input ligand    "
 echo "#################################"
+
+/usr/local/bin/autodock_gpu_64wi -L Quercetina.pdbqt -M *.fld --resnam AD_GPU_score_only --nrun 1 --rlige 1
+
+# Falta procesar el output para filtrar solo la energya del input ligand
