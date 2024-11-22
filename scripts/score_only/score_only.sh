@@ -8,13 +8,13 @@ set -euo pipefail
 Help()
 {
    # Display Help
-   echo "Usage: bash process_amber.sh [-h] [-d DIRECTORY] [-n REPLICAS] [-p 0|1] [-z 0|1] [-e 0|1] [-x 0|1]"
+   echo "Usage: bash score_only.sh [-h] [-d DIRECTORY] [-n LIG_RESNUM] [-a LIG_NAME] [-c MINIMIZATION_FILE]"
    echo
    echo "AMBER Protein-Ligand Complex rst7 --> receptor.pdb and ligand.mol2."
-   echo "Requires cpptraj and a rst7 (without water and ions) file from minimization."
-   echo "Hard-coded:"
-   echo " Ligand residue --> 2717"
-   echo " rst7 file from minimization (MM/PBSA procedure) --> min_no_ntr_noWAT.rst7" 
+   echo " --> Obtaing PDBQT's --> Compute AD4 Maps --> Get score of minimized pose"
+   echo "--> redock ligand in minimized pocket."
+   echo "All AD4 scripts are provided in this folder"
+   echo "Requires AMBER cpptraj and a rst7 file (without water and ions) from minimization."
    echo
    echo "Options:"
    echo "  -h                   Print this help"
@@ -27,7 +27,6 @@ Help()
 
 }
 
-
 # Default values
 
 LIGAND_RESNUMBER=2717
@@ -38,7 +37,7 @@ RST7_FILE="min_no_ntr_noWAT.rst7"
 ############################################################
 # Get the options
 
-while getopts ":hd:n:a:" option; do
+while getopts ":hd:n:a:c:" option; do
     case $option in
         h)  # Print this help
             Help
@@ -49,6 +48,8 @@ while getopts ":hd:n:a:" option; do
             LIGAND_RESNUMBER=$OPTARG;;
         a)  # Ligand name
             LIGAND_NAME=$OPTARG;;
+        c)  # Minimization file
+            RST7_FILE=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -71,13 +72,16 @@ fi
 if [[ ! -d "${IPATH}/docking_score_only" ]]
 then
    echo "${IPATH}/docking_score_only dont exists."
-   echo "Exiting..."
-   exit 1
+   echo "Creating.."
+   mkdir ${IPATH}/docking_score_only
+   cd ${IPATH}/docking_score_only
 else
    cd ${IPATH}/docking_score_only
 fi
 
 # Prepare cpptraj input file
+
+echo "Obtaining receptor.pdb and ligand.mol2"
 
   cat <<EOF > "./get_rec_lig.in"
 parm ../../../../topo/${LIGAND_NAME}_buried_pocket_vac_com.parm7
@@ -87,7 +91,7 @@ strip :${LIGAND_RESNUMBER} # receptor
 trajout receptor.pdb
 run
 strip !(:${LIGAND_RESNUMBER}) #ligando
-trajout ${LIGAND_NAME}_GAFF.mol2
+trajout ${LIGAND_NAME}_GAFF2.mol2
 run
 EOF
 
@@ -100,7 +104,7 @@ echo "Using antechamber to convert GAFF2 -> SYBYL atom types"
 echo "#########################################################"
 echo
 
-${AMBERHOME}/bin/antechamber -i ${IPATH}/docking_score_only/${LIGAND_NAME}_GAFF.mol2 -fi mol2 -o ${IPATH}/docking_score_only/${LIGAND_NAME}_SYBYL.mol2 -fo mol2 -at sybyl -pf y
+${AMBERHOME}/bin/antechamber -i ${IPATH}/docking_score_only/${LIGAND_NAME}_GAFF2.mol2 -fi mol2 -o ${IPATH}/docking_score_only/${LIGAND_NAME}_SYBYL.mol2 -fo mol2 -at sybyl -pf y
 echo "Done!"
 echo
 
@@ -138,15 +142,16 @@ then
 else
     echo "GPF creation failed."
     echo "Exiting..."
+    exit 1
 fi
 
 echo "###############################"
 echo "Computing maps with AutoGrid."
-echo "Maybe check AGFR, is faster:"
+echo "Maybe check AGFR, I think it's faster:"
 echo " https://ccsb.scripps.edu/agfr/"
 echo "##############################"
 
-/home/pc-usach-cm/Documentos/autodocksuite-4.2.6-x86_64Linux2/x86_64Linux2/autogrid4 -p ${IPATH}/docking_score_only/receptor.gpf -l ${IPATH}/docking_score_only/receptor.glg
+${SCRIPT_PATH}/autogrid4 -p ${IPATH}/docking_score_only/receptor.gpf -l ${IPATH}/docking_score_only/receptor.glg
 
 echo "Ok!"
 
@@ -157,9 +162,21 @@ echo "Ok!"
 #${SCRIPT_PATH}/prepare_dpf4.py -l ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt -r ${IPATH}/docking_score_only/receptor.pdbqt 
 
 echo "#################################"
-echo "Computing score of input ligand    "
+echo "Computing score of input ligand  "
+echo " and computing redocking         "
 echo "#################################"
 
-/usr/local/bin/autodock_gpu_64wi -L Quercetina.pdbqt -M *.fld --resnam AD_GPU_score_only --nrun 1 --rlige 1
+if [[ ! -d ${IPATH}/docking_score_only/redocking/ ]]
+then
+    mkdir ${IPATH}/docking_score_only/redocking/
+fi
 
-# Falta procesar el output para filtrar solo la energya del input ligand
+/usr/local/bin/autodock_gpu_64wi -L ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt -M ${IPATH}/docking_score_only/*.fld --resnam ${IPATH}/docking_score_only/redocking/${LIGAND_NAME}_redocking --nrun 1000 --rlige 1
+
+# Get Binding affinity
+
+if [[ ! -d ${IPATH}/docking_score_only/score_only/ ]]
+then
+    mkdir ${IPATH}/docking_score_only/score_only/
+fi
+awk '/INPUT-LIGAND-PDBQT: USER    Estimated Free Energy of Binding/ {print $9}' ${IPATH}/docking_score_only/redocking/${LIGAND_NAME}_redocking.dlg > ${IPATH}/docking_score_only/score_only/score_only.dat
