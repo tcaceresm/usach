@@ -69,6 +69,8 @@ do
     # Creating csv file with docking scores #
     #########################################
     "
+    ALL_LIGAND_ENERGIES=${OPATH}/docking_scores.csv
+    > $ALL_LIGAND_ENERGIES
 
     ${SCRIPT_PATH}/extract_energies.sh -d ${LIGAND_DLG} -o ${OPATH}
 
@@ -88,7 +90,6 @@ do
     # Performing clustering based on RMSD #
     #######################################
     "
-
     ${SCRIPT_PATH}/run_clustering.sh -d ${LIGAND_DLG} -o ${OPATH} -c ${CUTOFF}
 
 done

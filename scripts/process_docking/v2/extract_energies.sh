@@ -27,10 +27,6 @@ while getopts ":hd:o:" option; do
     esac
 done
 
-ALL_LIGAND_ENERGIES=${OPATH}/docking_scores.csv
-> $ALL_LIGAND_ENERGIES
-
-
 LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
 LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
 LIGAND_PDB_PATH=${OPATH}/${LIGAND_NAME}/pdb/
