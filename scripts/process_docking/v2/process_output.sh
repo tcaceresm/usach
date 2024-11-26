@@ -69,9 +69,6 @@ do
     # Creating csv file with docking scores #
     #########################################
     "
-    ALL_LIGAND_ENERGIES=${OPATH}/docking_scores.csv
-    > $ALL_LIGAND_ENERGIES
-
     ${SCRIPT_PATH}/extract_energies.sh -d ${LIGAND_DLG} -o ${OPATH}
 
     echo "Done creating csv file with docking scores!"
