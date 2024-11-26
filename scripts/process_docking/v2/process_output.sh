@@ -45,7 +45,6 @@ SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 for LIGAND_DLG in ${IPATH}/*.dlg
 do
-    echo ${IPATH}/*.dlg
     echo "
     ########################
     # Processing dlg file #
