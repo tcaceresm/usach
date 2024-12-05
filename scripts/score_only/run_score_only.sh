@@ -28,7 +28,7 @@ Help()
    echo "  -q OBTAIN_PDBQT       (default=1). Obtain PDBQTs of ligand and receptor."
    echo "  -m PREPARE_MAPS       (default=1). Calculate grid maps for AD4."
    echo "  -x RESCORE_REDOCKING  (default=1). Perform rescoring of minimized pose, and perform docking on minimized pocket."
-   echo "  -k PROCESS_REDOCKGIN  (default=1). Process docking output of redocked poses."
+   echo "  -k PROCESS_REDOCKING  (default=1). Process docking output of redocked poses."
    echo "  -t CUTOFF             (default=2.0). Cutoff employed for clustering of redocked poses."
 
 
