@@ -214,7 +214,7 @@ echo "############################"
 echo "Computing RMSD between minimized docked pose and redocking best pose"
 echo "############################"
 
-if [[ ! -f "${IPATH}/docking_score_only/redocking/processed_data/${LIGAND_NAME}_redocking/sdf/${LIGAND_NAME}_best_pose.sdf" ]]
+if [[ ! -f "${IPATH}/docking_score_only/redocking/processed_data/${LIGAND_NAME}_redocking/sdf/${LIGAND_NAME}_redocking_best_pose.sdf" ]]
 then
     echo "Redocking best pose not available"
     echo "Did you run this script with -k option?"
@@ -223,7 +223,7 @@ then
 else
 
     obrms ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt \
-    "${IPATH}/docking_score_only/redocking/processed_data/${LIGAND_NAME}_redocking/sdf/${LIGAND_NAME}_best_pose.sdf"
+    "${IPATH}/docking_score_only/redocking/processed_data/${LIGAND_NAME}_redocking/sdf/${LIGAND_NAME}_redocking_best_pose.sdf"
 
 fi
 
