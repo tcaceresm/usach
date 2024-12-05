@@ -14,11 +14,10 @@
 ############################################################
 Help() {
     echo "Script used to process AD output"
-    echo "Syntax: process_output.sh [-h|d|o]"
-    echo "To save a log file and also print the status, run: process_dlg.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Syntax: process_output.sh [-h|d|o|c]"
     echo "Options:"
     echo "h     Print help."
-    echo "d     dlg files directory."
+    echo "d     DLG files directory."
     echo "o     Output directory."
     echo "c     Clustering cutoff"
 }
@@ -60,7 +59,7 @@ do
     # Sorting conformations #
     #########################
     "
-    ${SCRIPT_PATH}/sort_pdb.sh -d ${LIGAND_DLG} -o ${OPATH}
+    ${SCRIPT_PATH}/sort_pdb.sh -d ${LIGAND_DLG} -i ${OPATH}
 
     echo "Done sorting conformations!"
 
@@ -69,7 +68,7 @@ do
     # Creating csv file with docking scores #
     #########################################
     "
-    ${SCRIPT_PATH}/extract_energies.sh -d ${LIGAND_DLG} -o ${OPATH}
+    ${SCRIPT_PATH}/extract_energies.sh -d ${LIGAND_DLG} -i ${OPATH}
 
     echo "Done creating csv file with docking scores!"
 
@@ -78,7 +77,7 @@ do
     # Calculating RMSD matrix #
     ###########################
     "
-    ${SCRIPT_PATH}/rmsd_matrix.sh -d ${LIGAND_DLG} -o ${OPATH}
+    ${SCRIPT_PATH}/rmsd_matrix.sh -d ${LIGAND_DLG} -i ${OPATH}
 
     echo "Done calculating RMSD matrix"
 
@@ -87,6 +86,6 @@ do
     # Performing clustering based on RMSD #
     #######################################
     "
-    ${SCRIPT_PATH}/run_clustering.sh -d ${LIGAND_DLG} -o ${OPATH} -c ${CUTOFF}
+    ${SCRIPT_PATH}/run_clustering.sh -d ${LIGAND_DLG} -i ${OPATH} -c ${CUTOFF}
 
 done
