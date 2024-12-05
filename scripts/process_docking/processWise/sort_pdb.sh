@@ -9,7 +9,7 @@
 ############################################################
 Help() {
     echo "Sort ligands' conformations in PDB file based on binding energy."
-    echo "Syntax: sort_pdb.sh [-h|d|o]."
+    echo "Syntax: sort_pdb.sh [-h|d|i]."
     echo "Requires already processed DLG file (process_dlg.sh)."
     echo "  The processed directory must be the same than "Processed DLG output directory"
     used by process_dlg.sh (-o flag)"
