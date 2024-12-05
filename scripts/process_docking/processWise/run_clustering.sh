@@ -42,7 +42,7 @@ SDF_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf"
 PDB_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/pdb"
 
 rmsd_df_path=${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data
-docking_scores=${PDB_DIR}/${LIGAND_NAME}_scores.csv
+docking_scores=${PROCESSED_DIRECTORY}/${LIGAND_NAME}/docking_scores.csv
 sdf_path=${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf
 output_path=${SDF_DIR}/cluster/${CUTOFF}
 
