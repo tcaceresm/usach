@@ -12,7 +12,6 @@ Help() {
     echo "Options:"
     echo "h     Print help."
     echo "d     dlg files directory. In this folder should be all pocket folders."
-    echo "c     Clustering cutoff for RMSD calculation between poses of same ligand"
 }
 
 ############################################################
@@ -20,15 +19,13 @@ Help() {
 ############################################################
 # Get the options
 
-while getopts ":hd:c:" option; do
+while getopts ":hd:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the DLG output directory
             IPATH=$OPTARG;;
-        c)  # Clustering cutoff
-            CUTOFF=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -51,7 +48,7 @@ do
     echo "Doing for site ${i}"
     echo "###################"
 
-    ${SCRIPT_PATH}/extract_all_energies.sh -d ${SITE_DLG} -o ${OUTPUT_PATH_POCKET} -c ${CUTOFF}
+    ${SCRIPT_PATH}/extract_all_energies.sh -d ${SITE_DLG} -o ${OUTPUT_PATH_POCKET}
 
     echo "Done for site ${i}"
 done
