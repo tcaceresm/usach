@@ -11,10 +11,12 @@ Help() {
     echo "Sort ligands' conformations in PDB file based on binding energy."
     echo "Syntax: sort_pdb.sh [-h|d|o]."
     echo "Requires already processed DLG file (process_dlg.sh)."
+    echo "  The processed directory must be the same than "Processed DLG output directory"
+    used by process_dlg.sh (-o flag)"
     echo "Options:"
     echo "h     Print help."
     echo "d     Ligand Name."
-    echo "i     Processed ligand DLG directory."
+    echo "i     Processed ligands' directory."
 }
 
 while getopts ":hd:i:" option; do
