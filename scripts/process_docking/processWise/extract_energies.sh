@@ -5,21 +5,22 @@
 ############################################################
 Help() {
     echo "Syntax: extract_energies.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: extract_energies.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Requires an already processed DLG file (process_dlg.sh)."
+    echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)"
     echo "Options:"
     echo "h     Print help"
     echo "d     Ligand Name."
-    echo "o     Output directory."
+    echo "i     Processed ligands' directory."
 }
 
-while getopts ":hd:o:" option; do
+while getopts ":hd:i:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
             LIGAND_NAME=$OPTARG;;
-        o)  # Output directory
+        i)  # Output directory
             OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
