@@ -41,7 +41,7 @@ seq $(cat $ENERGY_FILE | wc -l) | sed -E "s/.+/${LIGAND_NAME}/" > $TMP_FILE
 # Energies of single ligand
 
 paste -d ';' $ENERGY_FILE $TMP_FILE > "${OPATH}/docking_scores.csv"
-
+paste -d ';' $ENERGY_FILE $TMP_FILE > "${LIGAND_PDB_PATH}/${LIGAND_NAME}_scores.csv"
 rm $TMP_FILE
 
 # All ligand energies
