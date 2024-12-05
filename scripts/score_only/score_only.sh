@@ -224,7 +224,7 @@ else
 
     obrms ${IPATH}/docking_score_only/${LIGAND_NAME}.pdbqt \
     "${IPATH}/docking_score_only/redocking/processed_output/${LIGAND_NAME}_redocking/sdf/${LIGAND_NAME}_redocking_best_pose.sdf" \
-    > ${IPATH}/docking_score_only/rmsd.dat
+    > ${IPATH}/docking_score_only/redocking/rmsd.dat
 
 fi
 
