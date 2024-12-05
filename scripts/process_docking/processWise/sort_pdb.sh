@@ -10,7 +10,7 @@
 Help() {
     echo "Sort ligands' conformations in PDB file based on binding energy."
     echo "Syntax: sort_pdb.sh [-h|d|o]."
-    echo "DLG file path should be the same than docking output path."
+    echo "Requires already processed DLG file (process_dlg.sh)."
     echo "Options:"
     echo "h     Print help."
     echo "d     Ligand Name."
@@ -38,7 +38,6 @@ if ! command -v obabel &> /dev/null
     echo "Open Babel is not installed. Please install Open Babel and try again."
     exit 1
 fi
-
 
 LIGAND_NAME=$(basename ${DLG_FILE} .dlg)
 
