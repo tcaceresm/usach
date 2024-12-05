@@ -12,7 +12,7 @@ Help() {
     echo "Syntax: sort_pdb.sh [-h|d|i]."
     echo "Requires an already processed DLG file (process_dlg.sh)."
     echo "  The processed directory must be the same than "Processed DLG output directory"
-used by process_dlg.sh (-o flag)"
+    used by process_dlg.sh (-o flag)"
     echo "Options:"
     echo "h     Print help."
     echo "d     Ligand Name."
