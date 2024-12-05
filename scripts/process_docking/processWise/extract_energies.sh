@@ -6,7 +6,8 @@
 Help() {
     echo "Syntax: extract_energies.sh [-h|d|f|o]"
     echo "Requires an already processed DLG file (process_dlg.sh)."
-    echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)"
+    echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)."
+    echo "  Also, requires the output of sort_pdb.sh."
     echo "Options:"
     echo "h     Print help"
     echo "d     Ligand Name."
@@ -32,6 +33,13 @@ LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
 LIGAND_PDB_PATH=${PROCESSED_DIRECTORY}/${LIGAND_NAME}/pdb/
 
 ENERGY_FILE="$LIGAND_PDB_PATH/docking_energies.txt"
+
+if [[ ! -f ${ENERGY_FILE} ]]
+then
+    echo "${ENERGY_FILE} not found."
+    echo "Did you run sort_pdb.sh?"
+    exit 1
+fi
 
 sed -i 's/ /;/g' $ENERGY_FILE
 
