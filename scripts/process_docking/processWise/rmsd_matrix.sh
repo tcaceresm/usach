@@ -10,22 +10,23 @@
 Help() {
     echo "Script used to obtain RMSD matrix of docking poses. Molecules need to be the same"
     echo "Syntax: rmsd_matrix.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: rmsd_matrix.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Requires an already processed DLG file (process_dlg.sh)."
+    echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)"
     echo "Options:"
     echo "h     Print help"
-    echo "d     dlg file."
-    echo "o     Output directory."
+    echo "d     Ligand Name."
+    echo "i     Processed ligands' directory."
 }
 
-while getopts ":hd:o:" option; do
+while getopts ":hd:i:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
-            DLG_FILE=$OPTARG;;
-        o)  # Output directory
-            OPATH=$OPTARG;;
+            LIGAND_NAME=$OPTARG;;
+        i)  # Output directory
+            PROCESSED_DIRECTORY=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -39,10 +40,9 @@ then
     exit 1
 fi
 
-LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
-LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
+LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
 
-SDF_DIR="${OPATH}/${LIGAND_NAME}/sdf"
+SDF_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf"
 RMSD_FILE="${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data"
 
 echo "Performing RMSD matrix calculation of ${LIGAND_NAME}"
