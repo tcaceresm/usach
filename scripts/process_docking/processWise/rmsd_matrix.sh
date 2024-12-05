@@ -12,6 +12,7 @@ Help() {
     echo "Syntax: rmsd_matrix.sh [-h|d|f|o]"
     echo "Requires an already processed DLG file (process_dlg.sh)."
     echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)"
+    echo "Also, requires SDF file of sorted files (sort_pdb.sh output)"
     echo "Options:"
     echo "h     Print help"
     echo "d     Ligand Name."
@@ -44,6 +45,13 @@ LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
 
 SDF_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf"
 RMSD_FILE="${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data"
+
+if [[ ! -f "${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf" ]]
+then
+    echo "SDF of sorted conformations not found."
+    exit 1
+fi
+
 
 echo "Performing RMSD matrix calculation of ${LIGAND_NAME}"
 obrms -x ${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf > "${RMSD_FILE}_tmp"
