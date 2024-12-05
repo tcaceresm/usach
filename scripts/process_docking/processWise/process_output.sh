@@ -17,12 +17,12 @@ Help() {
     echo "Syntax: process_output.sh [-h|d|o|c]"
     echo "Options:"
     echo "h     Print help."
-    echo "d     DLG files directory."
-    echo "o     Output directory."
+    echo "d     DLG files path."
+    echo "o     Processed output directory."
     echo "c     Clustering cutoff"
 }
 
-while getopts ":hd:o:c:" option; do
+while getopts ":hd:o:i:" option; do
     case $option in
         h)  # Print this help
             Help
