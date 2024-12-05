@@ -38,8 +38,8 @@ cluster_docking <- function(rmsd_matrix, cutoff = 2.0) {
       seed <- cluster[1]
       
       rmsd <- rmsd_matrix[i, cluster[1]]
-      
-        if (rmsd < cutoff) {
+
+        if (rmsd <= cutoff) {
         clusters[[k]] <- c(cluster, i)
         added <- TRUE
         break
@@ -78,12 +78,11 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
                   minEnergy=min(Energia),
                   sdEnergy=sd(Energia)) %>% round(., 3)
       
-
       write.SDF(sdf_file[clusters[[cluster_index]]],
                 file = sprintf('%s/%s_cutoff=%s_cluster%s_size=%s_mean=%s_min=%s_std=%s.sdf',
                                output_path,ligand_name,cutoff,cluster_index,statistics$N,statistics$meanEnergy,statistics$minEnergy,statistics$sdEnergy
+                              )   
                 )
-      )
 
     } else {
       outliers <- append(outliers, cluster)
