@@ -31,7 +31,7 @@ while getopts ":hr:l:o:n:" option; do
          exit;;
       r) # Receptor FLD directory
          RECEPTOR_FLD=$OPTARG;;
-      l) # Enter the Ligands PDBQT output path
+      l) # Enter the Ligands PDBQT path
          LIGANDS_PDBQT_PATH=$OPTARG;;
       o) # Output path
          OUTPUT_PATH=$OPTARG;;
@@ -43,19 +43,15 @@ while getopts ":hr:l:o:n:" option; do
    esac
 done
 
-declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
+LIGANDS_PDBQT=(${LIGANDS_PDBQT_PATH}/*.pdbqt)
 
-#echo ${LIGANDS_PDBQT[@]}
+mkdir -p ${OUTPUT_PATH}
 
-if [[ ! -d $OUTPUT_PATH ]]
-then
- mkdir $OUTPUT_PATH
-fi
-
-for LIGAND  in "${LIGANDS_PDBQT[@]}"
+for LIGAND_NAME in "${LIGANDS_PDBQT[@]}"
  do
+  LIGAND_NAME=$(basename ${LIGAND} .pdbqt)
   echo "Docking ${LIGAND}"
-  /usr/local/bin/autodock_gpu_64wi -L ${LIGANDS_PDBQT_PATH}/"${LIGAND}" -M ${RECEPTOR_FLD}/*.maps.fld --nrun $NRUNS --resnam ${OUTPUT_PATH}/"${LIGAND}"
+  /usr/local/bin/autodock_gpu_64wi -L ${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt -M ${RECEPTOR_FLD}/*.maps.fld --nrun $NRUNS --resnam ${OUTPUT_PATH}/${LIGAND_NAME}
   done
 
 echo "Done!"
