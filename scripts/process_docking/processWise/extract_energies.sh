@@ -21,7 +21,7 @@ while getopts ":hd:i:" option; do
         d)  # Enter the input directory
             LIGAND_NAME=$OPTARG;;
         i)  # Output directory
-            OPATH=$OPTARG;;
+            PROCESSED_DIRECTORY=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -29,7 +29,7 @@ while getopts ":hd:i:" option; do
 done
 
 LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
-LIGAND_PDB_PATH=${OPATH}/${LIGAND_NAME}/pdb/
+LIGAND_PDB_PATH=${PROCESSED_DIRECTORY}/${LIGAND_NAME}/pdb/
 
 ENERGY_FILE="$LIGAND_PDB_PATH/docking_energies.txt"
 
@@ -41,8 +41,7 @@ seq $(cat $ENERGY_FILE | wc -l) | sed -E "s/.+/${LIGAND_NAME}/" > $TMP_FILE
 
 # Energies of single ligand
 
-paste -d ';' $ENERGY_FILE $TMP_FILE > "${OPATH}/docking_scores.csv"
-paste -d ';' $ENERGY_FILE $TMP_FILE > "${LIGAND_PDB_PATH}/${LIGAND_NAME}_scores.csv"
+paste -d ';' $ENERGY_FILE $TMP_FILE > "${PROCESSED_DIRECTORY}/${LIGAND_NAME}/docking_scores.csv"
 rm $TMP_FILE
 
 # All ligand energies
