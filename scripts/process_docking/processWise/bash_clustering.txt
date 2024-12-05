@@ -1,0 +1,62 @@
+# Ordenar las conformaciones por energía
+sort -n $ENERGY_FILE -o $ENERGY_FILE
+
+# Crear un archivo final con las conformaciones ordenadas
+SORTED_FILE="$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb"
+> $SORTED_FILE
+
+best_pose=true
+best_pose_name=
+clusters=()  # Inicializar array de clusters
+rmsd_tolerance=2.0  # Umbral de RMSD en Å
+
+while IFS= read -r line; do
+    model_num=$(echo "$line" | awk '{print $2}')
+    current_pose="$CONFORMATIONS_DIR/model_$model_num.pdb"
+    cat "$current_pose" >> "$SORTED_FILE"
+
+    if $best_pose; then
+        cat "$current_pose" > "$CONFORMATIONS_DIR/${LIGAND_NAME}_best_pose.pdb"
+        best_pose=false
+    fi
+
+    # Procesar clusters
+    added_to_cluster=false  # Bandera para verificar si se agregó a un cluster
+    #echo "Procesando pose: $current_pose"
+    #echo "Número de clusters actuales: ${#clusters[@]}"
+
+    for ((i=0; i<${#clusters[@]}; i++)); do
+        # La semilla del cluster es el primer elemento de la lista en clusters[i]
+        cluster_seed=$(echo "${clusters[$i]}" | awk '{print $1}')
+    #    echo "Comparando con cluster $i (semilla: $cluster_seed)"
+
+        # Calcular RMSD contra la semilla
+        rmsd=$(obrms "$current_pose" "$CONFORMATIONS_DIR/model_$cluster_seed.pdb" | awk '{print $3}')
+    #    echo "RMSD con semilla: $rmsd"
+
+        if (( $(echo "$rmsd <= $rmsd_tolerance" | bc -l) )); then
+            # Agregar al cluster actual
+            clusters[$i]="${clusters[$i]} $model_num"
+            added_to_cluster=true
+    #        echo "Pose agregada al cluster $i"
+            break
+        fi
+    done
+
+    # Si no se agregó a ningún cluster, crear uno nuevo
+    if ! $added_to_cluster; then
+    #    echo "Creando un nuevo cluster con la pose $model_num"
+        clusters+=("$model_num")
+    fi
+done < "$ENERGY_FILE"
+
+# Mostrar contenido final de los clusters
+echo "Resumen de clusters:"
+for ((i=0; i<${#clusters[@]}; i++)); do
+    echo "Cluster $i: ${clusters[$i]}"
+done
+
+
+
+
+echo "Sorted PDB!"
