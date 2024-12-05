@@ -8,7 +8,7 @@ Help() {
     echo "To save a log file and also print the status, run: extract_energies.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
-    echo "d     dlg file."
+    echo "d     Ligand Name."
     echo "o     Output directory."
 }
 
@@ -18,7 +18,7 @@ while getopts ":hd:o:" option; do
             Help
             exit;;
         d)  # Enter the input directory
-            DLG_FILE=$OPTARG;;
+            LIGAND_NAME=$OPTARG;;
         o)  # Output directory
             OPATH=$OPTARG;;
         \?) # Invalid option
@@ -27,9 +27,9 @@ while getopts ":hd:o:" option; do
     esac
 done
 
-LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
-LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
+LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
 LIGAND_PDB_PATH=${OPATH}/${LIGAND_NAME}/pdb/
+
 ENERGY_FILE="$LIGAND_PDB_PATH/docking_energies.txt"
 
 sed -i 's/ /;/g' $ENERGY_FILE
