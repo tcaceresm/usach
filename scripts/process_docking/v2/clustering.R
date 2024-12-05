@@ -127,10 +127,12 @@ ligand_name <- args[11]
 processed_data <- process_data(rmsd_df_path = rmsd_df_path, scores_path = docking_scores)
 
 clusters <- cluster_docking(rmsd_matrix = processed_data[[2]], cutoff = cutoff)
+
 write_sdf_clusters(rmsd_df = processed_data[[1]], 
                    sdf_path = sdf_path,
                    clusters = clusters,
                    output_path = output_path,
                    ligand_name = ligand_name,
                    cutoff = cutoff)
+                   
 print("Done clustering!")

@@ -9,7 +9,7 @@
 ############################################################
 Help() {
     echo "Sort ligands' conformations in PDB file based on binding energy"
-    echo "Syntax: sort_pdb.sh [-h|d|f|o]"
+    echo "Syntax: sort_pdb.sh [-h|d|o]"
     echo "To save a log file and also print the status, run: sort_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help"
@@ -40,9 +40,9 @@ if ! command -v obabel &> /dev/null
 fi
 
 
-LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
-LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
-echo "Doing for $LIGAND_NAME"    
+LIGAND_PDBQT=$(basename ${DLG_FILE} .dlg)
+LIGAND_NAME=$(basename ${LIGAND_PDBQT} .pdbqt)
+echo "Doing for ${LIGAND_NAME}"    
 
 # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
 CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
@@ -50,71 +50,68 @@ ENERGY_FILE="${OPATH}/${LIGAND_NAME}/pdb/docking_energies.txt"
 PDB_FILE=${CONFORMATIONS_DIR}/$LIGAND_NAME.pdb
     
 # Crear un directorio temporal para almacenar las conformaciones
-mkdir -p $CONFORMATIONS_DIR
+mkdir -p ${CONFORMATIONS_DIR}
 
 # Split pdb file, obtain energy values  
 
 awk -v energy_file=${ENERGY_FILE} -v conformation_dir=${CONFORMATIONS_DIR} '
-/MODEL/ {
-    molecule = $0 "\n"
-    run = $2
-    out = (conformation_dir "/model_" run ".pdb")
+    /MODEL/ {
+        molecule = ($0 "\n")
+        run = $2
+        out = (conformation_dir "/model_" run ".pdb")
     }
-/Estimated Free Energy of Binding/ {
-    molecule = (molecule $0 "\n")
-    #energy = sprintf("%.2f", $8); (molecule $0 "\n")
-    split($0, fields, "=")
-    split(fields[2], energy, " ")
-    energia = sprintf("%.2f", energy[1])
+    /Estimated Free Energy of Binding/ {
+        molecule = (molecule $0 "\n")
+        split($0, fields, "=")
+        split(fields[2], energy, " ")
+        energia = sprintf("%.2f", energy[1])
+        }
+    /ENDMDL/ {
+        molecule = molecule $0 "\n"
+        print molecule > out
+        close(out)
+        print energia, run > energy_file
     }
-/ENDMDL/ {
-    molecule = (molecule $0 "\n")
-    print molecule > out
-    close(out)
-    print (energia, run) > energy_file
-}
 
-!(/MODEL/ || /Estimated Free Energy of Binding/ || /ENDMDL/) {
-    molecule = molecule $0 "\n"
-}
-' $PDB_FILE
+    !(/MODEL/ || /Estimated Free Energy of Binding/ || /ENDMDL/) {
+        molecule = molecule $0 "\n"
+    }
+    ' $PDB_FILE
 
-
-if test -f "$ENERGY_FILE"; then
+if [[ -f "${ENERGY_FILE}" ]]; then
     :
 else
     echo "Energy File not generated!. Please check ${LIGAND_NAME}"
-    
+    exit 1
 fi
 
 # Ordenar las conformaciones por energía
-sort -n $ENERGY_FILE -o $ENERGY_FILE
+sort -n ${ENERGY_FILE} -o ${ENERGY_FILE}
 
 # Crear un archivo final con las conformaciones ordenadas
-SORTED_FILE="$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb"
-> $SORTED_FILE
+SORTED_FILE="${CONFORMATIONS_DIR}/${LIGAND_NAME}_sorted_conformations.pdb"
+> ${SORTED_FILE}
 
 # Leer el archivo de energías y concatenar las conformaciones ordenadas
-best_pose=true
-best_pose_name=
+BEST_POSE=true
 while IFS= read -r line; do
-    model_num=$(echo "$line" | awk '{print $2}')
-    cat "$CONFORMATIONS_DIR/model_$model_num.pdb" >> $SORTED_FILE
+    MODEL_NUM=$(echo "$line" | awk '{print $2}')
+    cat "${CONFORMATIONS_DIR}/model_${MODEL_NUM}.pdb" >> ${SORTED_FILE}
 
-    if $best_pose
+    if ${BEST_POSE}
     then
-        cat "$CONFORMATIONS_DIR/model_$model_num.pdb" > "$CONFORMATIONS_DIR/${LIGAND_NAME}_best_pose.pdb"
-        best_pose=false
+        cat "${CONFORMATIONS_DIR}/model_${MODEL_NUM}.pdb" > "${CONFORMATIONS_DIR}/${LIGAND_NAME}_best_pose.pdb"
+        BEST_POSE=false
     fi
-done < $ENERGY_FILE
+done < ${ENERGY_FILE}
 
 echo "Sorted PDB!"
 
 # Limpiar archivos temporales
-rm -rf $CONFORMATIONS_DIR/model_*.pdb
+rm -rf ${CONFORMATIONS_DIR}/model_*.pdb
 
 # Obtener SDF con poses ordenadas
 
 echo "Generating sorted SDF file based on sorted PDB"
-obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
-obabel -ipdb "$CONFORMATIONS_DIR/${LIGAND_NAME}_best_pose.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_best_pose.sdf"
+obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_best_pose.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_best_pose.sdf"
