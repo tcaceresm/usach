@@ -49,7 +49,7 @@ mkdir -p ${OUTPUT_PATH}
 
 for LIGAND_NAME in "${LIGANDS_PDBQT[@]}"
 do
-   LIGAND_NAME=$(basename ${LIGAND} .pdbqt)
+   LIGAND_NAME=$(basename ${LIGAND_NAME} .pdbqt)
    echo "Docking ${LIGAND_NAME}"
    /usr/local/bin/autodock_gpu_64wi -L ${LIGANDS_PDBQT_PATH}/${LIGAND_NAME}.pdbqt -M ${RECEPTOR_FLD}/*.maps.fld --nrun ${NRUNS} --resnam ${OUTPUT_PATH}/${LIGAND_NAME}
 done
