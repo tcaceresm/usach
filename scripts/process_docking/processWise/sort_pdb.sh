@@ -8,23 +8,23 @@
 # Help
 ############################################################
 Help() {
-    echo "Sort ligands' conformations in PDB file based on binding energy"
-    echo "Syntax: sort_pdb.sh [-h|d|o]"
-    echo "To save a log file and also print the status, run: sort_pdb.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Sort ligands' conformations in PDB file based on binding energy."
+    echo "Syntax: sort_pdb.sh [-h|d|o]."
+    echo "DLG file path should be the same than docking output path."
     echo "Options:"
-    echo "h     Print help"
-    echo "d     dlg file."
-    echo "o     Ouput directory."
+    echo "h     Print help."
+    echo "d     Ligand Name."
+    echo "i     Processed ligand DLG directory."
 }
 
-while getopts ":hd:o:" option; do
+while getopts ":hd:i:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
             DLG_FILE=$OPTARG;;
-        o)  # Output directory
+        i)  # Output directory
             OPATH=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
@@ -40,8 +40,8 @@ if ! command -v obabel &> /dev/null
 fi
 
 
-LIGAND_PDBQT=$(basename ${DLG_FILE} .dlg)
-LIGAND_NAME=$(basename ${LIGAND_PDBQT} .pdbqt)
+LIGAND_NAME=$(basename ${DLG_FILE} .dlg)
+
 echo "Doing for ${LIGAND_NAME}"    
 
 # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
