@@ -25,7 +25,7 @@ while getopts ":hd:i:" option; do
         d)  # Enter the input directory
             DLG_FILE=$OPTARG;;
         i)  # Output directory
-            OPATH=$OPTARG;;
+            PROCESSED_DIRECTORY=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -44,8 +44,8 @@ LIGAND_NAME=$(basename ${DLG_FILE} .dlg)
 echo "Doing for ${LIGAND_NAME}"    
 
 # Archivo temporal para almacenar los valores de energía y los nombres de conformaciones
-CONFORMATIONS_DIR="${OPATH}/${LIGAND_NAME}/pdb"
-ENERGY_FILE="${OPATH}/${LIGAND_NAME}/pdb/docking_energies.txt"
+CONFORMATIONS_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/pdb"
+ENERGY_FILE="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/pdb/docking_energies.txt"
 PDB_FILE=${CONFORMATIONS_DIR}/$LIGAND_NAME.pdb
     
 # Crear un directorio temporal para almacenar las conformaciones
@@ -112,5 +112,5 @@ rm -rf ${CONFORMATIONS_DIR}/model_*.pdb
 # Obtener SDF con poses ordenadas
 
 echo "Generating sorted SDF file based on sorted PDB"
-obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
-obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_best_pose.pdb" -osdf -O"${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_best_pose.sdf"
+obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_sorted_conformations.pdb" -osdf -O"${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_sorted_conformations.sdf"
+obabel -ipdb "${CONFORMATIONS_DIR}/${LIGAND_NAME}_best_pose.pdb" -osdf -O"${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_best_pose.sdf"
