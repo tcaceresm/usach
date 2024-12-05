@@ -22,7 +22,7 @@ Help() {
     echo "c     Clustering cutoff"
 }
 
-while getopts ":hd:o:i:" option; do
+while getopts ":hd:o:c:" option; do
     case $option in
         h)  # Print this help
             Help
