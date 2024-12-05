@@ -10,11 +10,10 @@
 Help() {
     echo "Script used to process dlg output from AD or vina"
     echo "Syntax: process_dlg.sh [-h|d|o]"
-    echo "To save a log file and also print the status, run: process_dlg.sh -d \$DIRECTORY | tee -a \$LOGFILE"
     echo "Options:"
     echo "h     Print help."
-    echo "d     dlg file."
-    echo "o     Output directory."
+    echo "d     DLG file path."
+    echo "o     Processed DLG output directory."
 }
 
 while getopts ":hd:o:" option; do
@@ -39,9 +38,13 @@ then
     exit 1
 fi
 
-LIGAND_PDBQT=$(basename ${DLG_FILE} .dlg)
-LIGAND_NAME=$(basename ${LIGAND_PDBQT} .pdbqt)
-LIGAND_PDB="${LIGAND_NAME}.pdb"
+# LIGAND_PDBQT=$(basename ${DLG_FILE} .dlg)
+# LIGAND_NAME=$(basename ${LIGAND_PDBQT} .pdbqt)
+# LIGAND_PDB="${LIGAND_NAME}.pdb"
+
+LIGAND_NAME=$(basename ${DLG_FILE} .dlg)
+LIGAND_PDBQT=${LIGAND_NAME}.pdbqt
+LIGAND_PDB=${LIGAND_NAME}.pdb
 
 echo "Converting ${DLG_FILE} to ${LIGAND_PDBQT} and ${LIGAND_PDB}"
 
