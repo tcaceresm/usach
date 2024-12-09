@@ -108,7 +108,7 @@ fi
 RECEPTOR=($(sed "s/.pdb//g" <<< "${RECEPTOR_PDB[*]}"))
 
 # Ligandos analizados
-LIGANDS_MOL2=("${WDPATH}/ligands/${LOCATION}/"*.mol2)
+LIGANDS_MOL2=("${WDPATH}/ligands/${LOCATION}_ligands/mol2_files/"*.mol2)
 #echo "${WDPATH}/ligands/${LOCATION}/"*.mol2
 
 if [[ ${#LIGANDS_MOL2[@]} -eq 0 ]]

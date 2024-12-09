@@ -96,7 +96,7 @@ then
     echo "Obtaining receptor.pdb and ligand.mol2"
 
     cat <<EOF > "./get_rec_lig.in"
-parm ../../../../topo/${LIGAND_NAME}_buried_pocket_vac_com.parm7
+parm ../../../../topo/${LIGAND_NAME}_vac_com.parm7
 trajin ../${RST7_FILE}
 # Save receptor and ligand separated
 strip :${LIGAND_RESNUMBER} # receptor

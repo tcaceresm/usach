@@ -77,6 +77,7 @@ write_sdf_clusters <- function(rmsd_df, sdf_path, clusters, output_path, ligand_
                   meanEnergy=mean(Energia),
                   minEnergy=min(Energia),
                   sdEnergy=sd(Energia)) %>% round(., 3)
+      write.csv(statistics, '~/Desktop/borrar.csv', row.names = F)
       
       write.SDF(sdf_file[clusters[[cluster_index]]],
                 file = sprintf('%s/%s_cutoff=%s_cluster%s_size=%s_mean=%s_min=%s_std=%s.sdf',
