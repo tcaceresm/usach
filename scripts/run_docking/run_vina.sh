@@ -47,7 +47,8 @@ for LIGAND in "${LIGANDS_PDBQT[@]}"
  do
   LIGAND=$(basename ${LIGAND} .pdbqt)
   echo "Docking ${LIGAND}"
-  /home/pc-usach-cm/Documentos/autodock_vina_1_1_2_linux_x86/bin/vina --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND} --out ${OUTPUT_PATH}/${LIGAND} --log "${OUTPUT_PATH}/${LIGAND}.log"
+  #/home/pc-usach-cm/Documentos/autodock_vina_1_1_2_linux_x86/bin/vina --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND} --out ${OUTPUT_PATH}/${LIGAND} --log "${OUTPUT_PATH}/${LIGAND}.log"
+  /home/pc-usach-cm/Documentos/gpu_autodockvina/Vina-GPU-2.1/AutoDock-Vina-GPU-2.1/AutoDock-Vina-GPU-2-1 --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND}.pdbqt --out ${OUTPUT_PATH}/${LIGAND}.pdbqt --log "${OUTPUT_PATH}/${LIGAND}.log"
  done
 
 echo "Done!"
