@@ -8,8 +8,7 @@ Help()
 {
    # Display Help
 
-   echo "Syntax: [-hrlco]"
-   echo "To save a log file and also print the status, run: bash prepare_odbqt.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+   echo "Syntax: NA"
    echo "Options:"
    echo "h     Print help"
    echo "l     Ligands PDBQT"
