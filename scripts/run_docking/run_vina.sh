@@ -39,12 +39,13 @@ while getopts ":h:l:c:o:" option; do
    esac
 done
 
-declare -a LIGANDS_PDBQT=($(ls ${LIGANDS_PDBQT_PATH}))
-declare -a LIGANDS=($(sed "s/.sdf//g" <<< "${LIGANDS_PDBQT[*]}"))
+LIGANDS_PDBQT=(${LIGANDS_PDBQT_PATH}/*.pdbqt)
 
+mkdir -p ${OUTPUT_PATH}
 
-for LIGAND  in "${LIGANDS[@]}"
+for LIGAND in "${LIGANDS_PDBQT[@]}"
  do
+  LIGAND=$(basename ${LIGAND} .pdbqt)
   echo "Docking ${LIGAND}"
   /home/pc-usach-cm/Documentos/autodock_vina_1_1_2_linux_x86/bin/vina --config ${CONFIG_FILE} --ligand ${LIGANDS_PDBQT_PATH}/${LIGAND} --out ${OUTPUT_PATH}/${LIGAND} --log "${OUTPUT_PATH}/${LIGAND}.log"
  done
