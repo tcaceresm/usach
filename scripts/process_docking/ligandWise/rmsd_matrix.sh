@@ -10,22 +10,24 @@
 Help() {
     echo "Script used to obtain RMSD matrix of docking poses. Molecules need to be the same"
     echo "Syntax: rmsd_matrix.sh [-h|d|f|o]"
-    echo "To save a log file and also print the status, run: rmsd_matrix.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Requires an already processed DLG file (process_dlg.sh)."
+    echo "  The processed directory must be the same than "Processed DLG output directory" used by process_dlg.sh (-o flag)"
+    echo "Also, requires SDF file of sorted files (sort_pdb.sh output)"
     echo "Options:"
     echo "h     Print help"
-    echo "d     dlg files directory."
-    echo "o     Output directory."
+    echo "d     Ligand Name."
+    echo "i     Processed ligands' directory."
 }
 
-while getopts ":hd:o:" option; do
+while getopts ":hd:i:" option; do
     case $option in
         h)  # Print this help
             Help
             exit;;
         d)  # Enter the input directory
-            IPATH=$OPTARG;;
-        o)  # Output directory
-            OPATH=$OPTARG;;
+            LIGAND_NAME=$OPTARG;;
+        i)  # Output directory
+            PROCESSED_DIRECTORY=$OPTARG;;
         \?) # Invalid option
             echo "Error: Invalid option"
             exit;;
@@ -39,17 +41,19 @@ then
     exit 1
 fi
 
-for DLG_FILE in "$IPATH"/*.dlg
-do
-    LIGAND_PDBQT=$(basename $DLG_FILE .dlg)
-    LIGAND_NAME=$(basename $LIGAND_PDBQT .pdbqt)
-    
-    SDF_DIR="${OPATH}/${LIGAND_NAME}/sdf"
-    RMSD_FILE="${OPATH}/${LIGAND_NAME}/sdf/${LIGAND_NAME}_RMSD_matrix.data"
-    
-    echo "Performing RMSD matrix calculation of ${LIGAND_NAME}"
-    obrms -x ${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf > "${RMSD_FILE}_tmp"
-    cat "${RMSD_FILE}_tmp" | awk '{$1=""}1' > "${RMSD_FILE}"
-    rm "${RMSD_FILE}_tmp"
-    
-done
+LIGAND_NAME=$(basename ${LIGAND_NAME} .dlg)
+
+SDF_DIR="${PROCESSED_DIRECTORY}/${LIGAND_NAME}/sdf"
+RMSD_FILE="${SDF_DIR}/${LIGAND_NAME}_RMSD_matrix.data"
+
+if [[ ! -f "${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf" ]]
+then
+    echo "SDF of sorted conformations not found."
+    exit 1
+fi
+
+
+echo "Performing RMSD matrix calculation of ${LIGAND_NAME}"
+obrms -x ${SDF_DIR}/${LIGAND_NAME}_sorted_conformations.sdf > "${RMSD_FILE}_tmp"
+cat "${RMSD_FILE}_tmp" | awk '{$1=""}1' > "${RMSD_FILE}"
+rm "${RMSD_FILE}_tmp"

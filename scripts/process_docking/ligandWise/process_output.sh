@@ -14,12 +14,11 @@
 ############################################################
 Help() {
     echo "Script used to process AD output"
-    echo "Syntax: process_output.sh [-h|d|o]"
-    echo "To save a log file and also print the status, run: process_dlg.sh -d \$DIRECTORY | tee -a \$LOGFILE"
+    echo "Syntax: process_output.sh [-h|d|o|c]"
     echo "Options:"
     echo "h     Print help."
-    echo "d     dlg files directory."
-    echo "o     Output directory."
+    echo "d     DLG files path."
+    echo "o     Processed output directory."
     echo "c     Clustering cutoff"
 }
 
@@ -43,50 +42,50 @@ done
 SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
-echo "
-########################
-# Processing dlg files #
-########################
-"
+for LIGAND_DLG in ${IPATH}/*.dlg
+do
+    echo "
+    ########################
+    # Processing dlg file #
+    ########################
+    "
 
-${SCRIPT_PATH}/process_dlg.sh -d ${IPATH} -o ${OPATH}
+    ${SCRIPT_PATH}/process_dlg.sh -d ${LIGAND_DLG} -o ${OPATH}
 
-echo "Done processing dlg files!"
+    echo "Done processing dlg file!"
 
+    echo "
+    #########################
+    # Sorting conformations #
+    #########################
+    "
+    ${SCRIPT_PATH}/sort_pdb.sh -d ${LIGAND_DLG} -i ${OPATH}
 
-echo "
-#########################
-# Sorting conformations #
-#########################
-"
-${SCRIPT_PATH}/sort_pdb.sh -d ${IPATH} -o ${OPATH}
+    echo "Done sorting conformations!"
 
-echo "Done sorting conformations!"
+    echo "
+    #########################################
+    # Creating csv file with docking scores #
+    #########################################
+    "
+    ${SCRIPT_PATH}/extract_energies.sh -d ${LIGAND_DLG} -i ${OPATH}
 
-echo "
-#########################################
-# Creating csv file with docking scores #
-#########################################
-"
+    echo "Done creating csv file with docking scores!"
 
-${SCRIPT_PATH}/extract_energies.sh -d ${IPATH} -o ${OPATH}
+    echo "
+    ###########################
+    # Calculating RMSD matrix #
+    ###########################
+    "
+    ${SCRIPT_PATH}/rmsd_matrix.sh -d ${LIGAND_DLG} -i ${OPATH}
 
-echo "Done creating csv file with docking scores!"
+    echo "Done calculating RMSD matrix"
 
+    echo "
+    #######################################
+    # Performing clustering based on RMSD #
+    #######################################
+    "
+    ${SCRIPT_PATH}/run_clustering.sh -d ${LIGAND_DLG} -i ${OPATH} -c ${CUTOFF}
 
-echo "
-###########################
-# Calculating RMSD matrix #
-###########################
-"
-${SCRIPT_PATH}/rmsd_matrix.sh -d ${IPATH} -o ${OPATH}
-
-echo "Done calculating RMSD matrix"
-
-echo "
-#######################################
-# Performing clustering based on RMSD #
-#######################################
-"
-
-${SCRIPT_PATH}/run_clustering.sh -d ${IPATH} -o ${OPATH} -c $CUTOFF
+done
